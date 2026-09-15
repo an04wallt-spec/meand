@@ -50,12 +50,28 @@
 
       display: block;
 
-      /* Проявляем очень тёмный рисунок */
       filter:
         brightness(2.4)
         contrast(1.15);
 
-      opacity: 1;
+      animation: logoBreath 7s ease-in-out infinite;
+    }
+
+    @keyframes logoBreath {
+      0%,
+      100% {
+        opacity: 0.12;
+        filter:
+          brightness(1.15)
+          contrast(1.05);
+      }
+
+      50% {
+        opacity: 1;
+        filter:
+          brightness(2.4)
+          contrast(1.15);
+      }
     }
 
     .status {
