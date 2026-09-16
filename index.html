@@ -36,7 +36,7 @@ body{font-family:Georgia,"Times New Roman",serif}
 .logo{position:fixed;z-index:30;left:clamp(10px,2vw,40px);top:clamp(10px,2.5vh,38px);width:clamp(225px,27vw,465px);opacity:.04;pointer-events:none;user-select:none;animation:logoBreath var(--breath-time) ease-in-out infinite}
 .logo img{display:block;width:100%;height:auto}
 @keyframes logoBreath{0%,100%{opacity:.035}50%{opacity:.27}}
-.poem{position:fixed;z-index:15;left:50%;top:50%;transform:translate(-50%,-50%);color:var(--poem-color);font-family:Georgia,"Times New Roman",serif;font-size:clamp(18px,1.42vw,25px);font-style:italic;font-weight:400;line-height:1.78;letter-spacing:.025em;white-space:nowrap;text-align:left;opacity:.72;text-shadow:0 0 8px rgba(184,137,98,.08);pointer-events:none;user-select:text}
+.poem{position:fixed;z-index:15;left:50%;bottom:clamp(12px,2vh,28px);transform:translateX(-50%);color:var(--poem-color);font-family:Georgia,"Times New Roman",serif;font-size:clamp(18px,1.42vw,25px);font-style:italic;font-weight:400;line-height:1.78;letter-spacing:.025em;white-space:nowrap;text-align:left;opacity:.72;text-shadow:0 0 8px rgba(184,137,98,.08);pointer-events:none;user-select:text}
 .poem-text{margin:0;white-space:pre}
 .poem-char{opacity:0;transition:opacity 180ms ease}
 .poem-char.visible{opacity:1}
@@ -45,7 +45,7 @@ body{font-family:Georgia,"Times New Roman",serif}
 .transition-layer{position:fixed;inset:0;z-index:100;opacity:0;pointer-events:none;background:#fff;transition:opacity var(--page-transition-time) cubic-bezier(.45,0,.2,1)}
 body.leaving .transition-layer{opacity:1}body.leaving .home{opacity:0;filter:blur(2px) brightness(1.05)}body.leaving .logo{opacity:0}
 @media(max-aspect-ratio:9/16){.artboard{width:100vw;height:auto;aspect-ratio:9/16;right:0;top:50%;transform:translateY(-50%)}}
-@media(max-width:700px){.logo{left:2vw;top:2vh;width:clamp(204px,57vw,315px)}.menu-item{font-size:clamp(14px,3.7vw,20px)}.poem{left:4vw;top:clamp(180px,28vh,270px);transform:none;max-width:61vw;font-size:clamp(12px,3.35vw,17px);line-height:1.70;letter-spacing:.01em;white-space:nowrap;opacity:.72}.poem-year{margin-top:.55em}}
+@media(max-width:700px){.logo{left:2vw;top:2vh;width:clamp(204px,57vw,315px)}.menu-item{font-size:clamp(14px,3.7vw,20px)}.poem{left:4vw;bottom:clamp(8px,1.5vh,18px);top:auto;transform:none;max-width:61vw;font-size:clamp(12px,3.35vw,17px);line-height:1.70;letter-spacing:.01em;white-space:nowrap;opacity:.72}.poem-year{margin-top:.55em}}
 @media(prefers-reduced-motion:reduce){.menu-item,.logo{animation:none}.menu-item{opacity:.80}.logo{opacity:.16}.home,.transition-layer{transition-duration:.25s}.poem-char{opacity:1;transition:none}.poem-year{opacity:.72;transition:none}}
 </style>
 </head>
