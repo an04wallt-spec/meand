@@ -33,9 +33,6 @@ body{font-family:Georgia,"Times New Roman",serif}
 .menu-furniture{left:66.0%;top:16%}.menu-scripts{left:73.4%;top:20%}.menu-other{left:80.4%;top:24%}.menu-prose{left:87.5%;top:28%}.menu-texts{left:94.0%;top:32%}
 .menu-item:hover,.menu-item:focus-visible{opacity:1!important;outline:none;text-shadow:0 0 7px rgba(255,255,255,.75),0 0 20px rgba(255,240,220,.28)}
 @keyframes textBreath{0%,100%{opacity:.06;text-shadow:0 0 2px rgba(255,255,255,.025)}50%{opacity:1;text-shadow:0 0 7px rgba(255,255,255,.58),0 0 20px rgba(255,240,220,.24)}}
-.logo{position:fixed;z-index:30;left:clamp(10px,2vw,40px);top:clamp(10px,2.5vh,38px);width:clamp(225px,27vw,465px);opacity:.04;pointer-events:none;user-select:none;animation:logoBreath var(--breath-time) ease-in-out infinite}
-.logo img{display:block;width:100%;height:auto}
-@keyframes logoBreath{0%,100%{opacity:.035}50%{opacity:.27}}
 .poem{position:fixed;z-index:15;left:50%;bottom:clamp(12px,2vh,28px);transform:translateX(-50%);color:var(--poem-color);font-family:Georgia,"Times New Roman",serif;font-size:clamp(18px,1.42vw,25px);font-style:italic;font-weight:400;line-height:1.78;letter-spacing:.025em;white-space:nowrap;text-align:left;opacity:.72;text-shadow:0 0 8px rgba(184,137,98,.08);pointer-events:none;user-select:text}
 .poem-text{margin:0;white-space:pre}
 .poem-line{display:block;min-height:1.78em}
@@ -44,10 +41,10 @@ body{font-family:Georgia,"Times New Roman",serif}
 .poem-year{display:block;margin-top:.65em;text-align:right;font-size:.82em;font-style:normal;letter-spacing:.12em;opacity:0;transition:opacity 800ms ease}
 .poem-year.visible{opacity:.72}
 .transition-layer{position:fixed;inset:0;z-index:100;opacity:0;pointer-events:none;background:#fff;transition:opacity var(--page-transition-time) cubic-bezier(.45,0,.2,1)}
-body.leaving .transition-layer{opacity:1}body.leaving .home{opacity:0;filter:blur(2px) brightness(1.05)}body.leaving .logo{opacity:0}
+body.leaving .transition-layer{opacity:1}body.leaving .home{opacity:0;filter:blur(2px) brightness(1.05)}
 @media(max-aspect-ratio:9/16){.artboard{width:100vw;height:auto;aspect-ratio:9/16;right:0;top:50%;transform:translateY(-50%)}}
-@media(max-width:700px){.logo{left:2vw;top:2vh;width:clamp(204px,57vw,315px)}.menu-item{font-size:clamp(14px,3.7vw,20px)}.poem{left:4vw;bottom:clamp(8px,1.5vh,18px);top:auto;transform:none;max-width:61vw;font-size:clamp(12px,3.35vw,17px);line-height:1.70;letter-spacing:.01em;white-space:nowrap;opacity:.72}.poem-line{min-height:1.70em}.poem-year{margin-top:.55em}}
-@media(prefers-reduced-motion:reduce){.menu-item,.logo{animation:none}.menu-item{opacity:.80}.logo{opacity:.16}.home,.transition-layer{transition-duration:.25s}.poem-char{opacity:1;transition:none}.poem-year{opacity:.72;transition:none}}
+@media(max-width:700px){.menu-item{font-size:clamp(14px,3.7vw,20px)}.poem{left:4vw;bottom:clamp(8px,1.5vh,18px);top:auto;transform:none;max-width:61vw;font-size:clamp(12px,3.35vw,17px);line-height:1.70;letter-spacing:.01em;white-space:nowrap;opacity:.72}.poem-line{min-height:1.70em}.poem-year{margin-top:.55em}}
+@media(prefers-reduced-motion:reduce){.menu-item{animation:none}.menu-item{opacity:.80}.home,.transition-layer{transition-duration:.25s}.poem-char{opacity:1;transition:none}.poem-year{opacity:.72;transition:none}}
 </style>
 </head>
 <body>
@@ -64,7 +61,6 @@ body.leaving .transition-layer{opacity:1}body.leaving .home{opacity:0;filter:blu
 </nav>
 </div>
 <section class="poem" id="poem" aria-label="Стихотворение"><div class="poem-text" id="poemText"></div><span class="poem-year" id="poemYear"></span></section>
-<div class="logo"><img src="logo.png" alt="" draggable="false"></div>
 </main>
 <div class="transition-layer" id="transitionLayer" aria-hidden="true"></div>
 <script>
@@ -82,7 +78,7 @@ function linePause(line){if(line==="Время стирает всё")return 210
 async function addCharacter(target,character,delay){const span=document.createElement("span");span.className="poem-char";span.textContent=character;target.appendChild(span);requestAnimationFrame(()=>requestAnimationFrame(()=>span.classList.add("visible")));await sleep(delay)}
 async function revealPoem(){
 if(reducedMotion){currentPoem.lines.forEach((line,index)=>lineElements[index].textContent=line);poemYear.classList.add("visible");return}
-await sleep(1600);
+await sleep(5000);
 for(let lineIndex=0;lineIndex<currentPoem.lines.length;lineIndex++){
 const line=currentPoem.lines[lineIndex];const target=lineElements[lineIndex];
 if(line==="....."){for(let dot=0;dot<5;dot++)await addCharacter(target,".",1000)}else{for(const character of line)await addCharacter(target,character,characterDelay(character))}
