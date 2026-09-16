@@ -69,7 +69,7 @@ body.leaving .transition-layer{opacity:1}body.leaving .home{opacity:0;filter:blu
 <div class="transition-layer" id="transitionLayer" aria-hidden="true"></div>
 <script>
 (()=>{
-const poemCollection=[{lines:["Время стирает всё","Обиды. Слова и даты","Стирает друзей. Дебаты","Одноклассников имена","И ветра шёпот стирает","Любимых песен строки","Морские стирает закаты","......","Не трогает лишь боль утраты."],year:"2026"}];
+const poemCollection=[{lines:["Время стирает всё","Обиды. Слова и даты","Стирает друзей. Дебаты","Одноклассников имена","И ветра шёпот стирает","Любимых песен строки","Морские стирает закаты",".....","Не трогает лишь боль утраты."],year:"2026"}];
 const currentPoem=poemCollection[0];
 const poemText=document.getElementById("poemText");
 const poemYear=document.getElementById("poemYear");
@@ -78,14 +78,14 @@ const reducedMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matche
 const lineElements=currentPoem.lines.map(()=>{const line=document.createElement("span");line.className="poem-line";poemText.appendChild(line);return line});
 poemYear.textContent=currentPoem.year;
 function characterDelay(character){if(character===",")return 380;if(character==="."||character==="!"||character==="?")return 650;if(character===" ")return 60;return 95}
-function linePause(line){if(line==="Время стирает всё")return 2100;if(line==="Обиды. Слова и даты")return 1750;if(line==="Стирает друзей. Дебаты")return 1800;if(line==="Одноклассников имена")return 2300;if(line==="И ветра шёпот стирает")return 1750;if(line==="Любимых песен строки")return 1800;if(line==="Морские стирает закаты")return 2100;if(line==="......")return 180;return 1750}
+function linePause(line){if(line==="Время стирает всё")return 2100;if(line==="Обиды. Слова и даты")return 1750;if(line==="Стирает друзей. Дебаты")return 1800;if(line==="Одноклассников имена")return 2300;if(line==="И ветра шёпот стирает")return 1750;if(line==="Любимых песен строки")return 1800;if(line==="Морские стирает закаты")return 2100;if(line===".....")return 180;return 1750}
 async function addCharacter(target,character,delay){const span=document.createElement("span");span.className="poem-char";span.textContent=character;target.appendChild(span);requestAnimationFrame(()=>requestAnimationFrame(()=>span.classList.add("visible")));await sleep(delay)}
 async function revealPoem(){
 if(reducedMotion){currentPoem.lines.forEach((line,index)=>lineElements[index].textContent=line);poemYear.classList.add("visible");return}
 await sleep(1600);
 for(let lineIndex=0;lineIndex<currentPoem.lines.length;lineIndex++){
 const line=currentPoem.lines[lineIndex];const target=lineElements[lineIndex];
-if(line==="......"){for(let dot=0;dot<6;dot++)await addCharacter(target,".",1000)}else{for(const character of line)await addCharacter(target,character,characterDelay(character))}
+if(line==="....."){for(let dot=0;dot<5;dot++)await addCharacter(target,".",1000)}else{for(const character of line)await addCharacter(target,character,characterDelay(character))}
 if(lineIndex<currentPoem.lines.length-1)await sleep(linePause(line))
 }
 await sleep(1300);poemYear.classList.add("visible")}
