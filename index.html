@@ -78,7 +78,7 @@ function linePause(line){if(line==="Время стирает всё")return 210
 async function addCharacter(target,character,delay){const span=document.createElement("span");span.className="poem-char";span.textContent=character;target.appendChild(span);requestAnimationFrame(()=>requestAnimationFrame(()=>span.classList.add("visible")));await sleep(delay)}
 async function revealPoem(){
 if(reducedMotion){currentPoem.lines.forEach((line,index)=>lineElements[index].textContent=line);poemYear.classList.add("visible");return}
-await sleep(5000);
+await sleep(10000);
 for(let lineIndex=0;lineIndex<currentPoem.lines.length;lineIndex++){
 const line=currentPoem.lines[lineIndex];const target=lineElements[lineIndex];
 if(line==="....."){for(let dot=0;dot<5;dot++)await addCharacter(target,".",1000)}else{for(const character of line)await addCharacter(target,character,characterDelay(character))}
