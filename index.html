@@ -13,15 +13,21 @@
 <style>
 
     /* =========================================================
-       БАЗОВЫЕ ПАРАМЕТРЫ
+       ОСНОВНЫЕ ПАРАМЕТРЫ
        ========================================================= */
 
     :root {
 
-        --brown: #1b0903;
+        /*
+           Основной цвет взят максимально близко
+           к тёмной коричневой среде изображения.
+        */
+
+        --brown-dark: #170703;
+        --brown-main: #260c04;
+        --brown-warm: #351207;
 
         --breath-time: 5.5s;
-
         --page-transition-time: 2s;
 
     }
@@ -39,10 +45,12 @@
         height: 100%;
 
         margin: 0;
+        padding: 0;
 
         overflow: hidden;
 
-        background: var(--brown);
+        background:
+            var(--brown-main);
 
     }
 
@@ -58,7 +66,7 @@
 
 
     /* =========================================================
-       СЦЕНА
+       ГЛАВНАЯ СТРАНИЦА
        ========================================================= */
 
     .home {
@@ -70,61 +78,117 @@
         overflow: hidden;
 
         background:
-            var(--brown);
+            var(--brown-main);
 
         opacity: 1;
 
         transition:
-            opacity var(--page-transition-time) ease,
-            filter var(--page-transition-time) ease;
+
+            opacity
+            var(--page-transition-time)
+            cubic-bezier(.45,0,.2,1),
+
+            filter
+            var(--page-transition-time)
+            cubic-bezier(.45,0,.2,1);
 
     }
 
 
     /* =========================================================
-       БАРХАТНЫЙ ФОН
+       ОБЩИЙ БАРХАТНЫЙ ФОН
 
-       Он заполняет всё свободное пространство,
-       которое появляется на широких мониторах.
+       Теперь это не просто коричневая заливка.
 
-       Поэтому вертикальный эталон НЕ растягивается
-       на весь монитор.
+       Градиенты продолжают световую среду изображения
+       в левую часть большого монитора.
        ========================================================= */
 
     .velvet-background {
 
         position: absolute;
 
-        inset: -5%;
+        inset: 0;
 
         z-index: 0;
 
         background:
 
             radial-gradient(
-                ellipse at 78% 15%,
-                rgba(116, 48, 10, .55) 0%,
-                rgba(65, 22, 5, .48) 30%,
-                rgba(28, 8, 2, .92) 72%,
-                #130501 100%
+                ellipse 95% 130%
+                at 84% 18%,
+
+                rgba(92, 31, 7, .52) 0%,
+
+                rgba(62, 19, 5, .45) 27%,
+
+                rgba(40, 11, 3, .35) 52%,
+
+                transparent 76%
+            ),
+
+            radial-gradient(
+                ellipse 75% 100%
+                at 58% 62%,
+
+                rgba(72, 21, 5, .22) 0%,
+
+                transparent 72%
             ),
 
             linear-gradient(
                 90deg,
-                #120401 0%,
-                #1b0702 45%,
-                #321006 100%
+
+                #180602 0%,
+
+                #1d0702 25%,
+
+                #230902 48%,
+
+                #2b0d04 70%,
+
+                #311006 100%
             );
 
     }
 
 
     /*
-       Очень мягкое свечение справа.
+       Очень мягкая тень сверху и снизу.
 
-       Это продолжает атмосферу исходника,
-       но не пытается повторить струны
-       или отверстие.
+       Она делает фон менее похожим
+       на компьютерный градиент.
+    */
+
+    .velvet-background::before {
+
+        content: "";
+
+        position: absolute;
+
+        inset: 0;
+
+        pointer-events: none;
+
+        background:
+
+            linear-gradient(
+                180deg,
+
+                rgba(0,0,0,.15) 0%,
+
+                transparent 25%,
+
+                transparent 72%,
+
+                rgba(0,0,0,.16) 100%
+            );
+
+    }
+
+
+    /*
+       Контровое тепло справа.
     */
 
     .velvet-background::after {
@@ -135,15 +199,18 @@
 
         inset: 0;
 
+        pointer-events: none;
+
         background:
 
             radial-gradient(
-                ellipse at 91% 7%,
-                rgba(208, 103, 35, .13),
-                transparent 34%
-            );
+                ellipse 42% 80%
+                at 100% 5%,
 
-        pointer-events: none;
+                rgba(180, 78, 21, .10),
+
+                transparent 72%
+            );
 
     }
 
@@ -151,18 +218,7 @@
     /* =========================================================
        КОМПОЗИЦИОННАЯ ПЛОСКОСТЬ
 
-       ЭТО ГЛАВНОЕ ИЗМЕНЕНИЕ.
-
-       Внутри неё находятся одновременно:
-
-       main-bg.png
-       +
-       надписи
-
-       Поэтому они масштабируются ВМЕСТЕ.
-
-       Соотношение сторон равно исходному
-       вертикальному изображению 9:16.
+       Соотношение сторон исходника сохраняется.
        ========================================================= */
 
     .artboard {
@@ -171,38 +227,17 @@
 
         z-index: 5;
 
-
-        /*
-           На вертикальном экране
-           эталон занимает весь экран.
-        */
-
-        height: 100vh;
-
-        height: 100dvh;
-
-
-        /*
-           Ширина вычисляется из высоты.
-
-           Никакого cover.
-           Никакого растягивания.
-        */
-
-        aspect-ratio: 9 / 16;
-
-
-        /*
-           Композиция привязана к правому краю.
-        */
-
         right: 0;
 
         top: 50%;
 
+        height: 100vh;
+        height: 100dvh;
+
+        aspect-ratio: 9 / 16;
+
         transform:
             translateY(-50%);
-
 
         overflow: visible;
 
@@ -210,7 +245,12 @@
 
 
     /* =========================================================
-       ЭТАЛОННОЕ ИЗОБРАЖЕНИЕ
+       MAIN-BG.PNG
+
+       Изображение не является обычным background.
+
+       Благодаря этому мы можем независимо
+       управлять его прозрачностью и растворением.
        ========================================================= */
 
     .artwork {
@@ -230,19 +270,126 @@
 
         user-select: none;
 
+
+        /*
+           Немного приглушаем весь рисунок.
+
+           НЕ делаем его сильно прозрачным,
+           иначе пропадут струны.
+        */
+
+        opacity: .82;
+
+
+        /*
+           Чуть убираем агрессивную яркость
+           и насыщенность янтарного света.
+        */
+
+        filter:
+
+            brightness(.84)
+            saturate(.82)
+            contrast(.94);
+
+
+        /*
+           КЛЮЧЕВОЙ МОМЕНТ.
+
+           Левая часть изображения постепенно
+           становится прозрачной.
+
+           Поэтому вертикальная граница artboard
+           больше не должна читаться.
+        */
+
+        -webkit-mask-image:
+
+            linear-gradient(
+                to right,
+
+                transparent 0%,
+
+                rgba(0,0,0,.08) 5%,
+
+                rgba(0,0,0,.28) 13%,
+
+                rgba(0,0,0,.60) 24%,
+
+                rgba(0,0,0,.86) 36%,
+
+                #000 49%,
+
+                #000 100%
+            );
+
+
+        mask-image:
+
+            linear-gradient(
+                to right,
+
+                transparent 0%,
+
+                rgba(0,0,0,.08) 5%,
+
+                rgba(0,0,0,.28) 13%,
+
+                rgba(0,0,0,.60) 24%,
+
+                rgba(0,0,0,.86) 36%,
+
+                #000 49%,
+
+                #000 100%
+            );
+
+    }
+
+
+    /* =========================================================
+       ДОПОЛНИТЕЛЬНОЕ РАСТВОРЕНИЕ
+
+       Поверх левой части изображения лежит
+       прозрачная коричневая вуаль.
+
+       Она дополнительно убирает ощущение
+       "вставленной фотографии".
+       ========================================================= */
+
+    .artboard::after {
+
+        content: "";
+
+        position: absolute;
+
+        inset: 0;
+
+        z-index: 10;
+
+        pointer-events: none;
+
+        background:
+
+            linear-gradient(
+                90deg,
+
+                rgba(35, 9, 2, .72) 0%,
+
+                rgba(35, 9, 2, .45) 15%,
+
+                rgba(35, 9, 2, .20) 29%,
+
+                rgba(35, 9, 2, .05) 42%,
+
+                transparent 55%
+            );
+
     }
 
 
     /* =========================================================
        НАВИГАЦИЯ
-
-       ВАЖНО:
-
-       Координаты находятся внутри ARTBOARD,
-       а НЕ внутри окна браузера.
-
-       Поэтому при изменении экрана надписи
-       остаются привязанными к струнам.
        ========================================================= */
 
     .string-menu {
@@ -262,52 +409,83 @@
 
         position: absolute;
 
-        writing-mode: vertical-rl;
+        writing-mode:
+            vertical-rl;
+
+        /*
+           Читается СНИЗУ ВВЕРХ.
+        */
 
         transform:
+
             translateX(50%)
             rotate(180deg);
 
         transform-origin:
             center center;
 
-        color: #fff;
+
+        color:
+            #ffffff;
+
 
         font-family:
+
             Georgia,
             "Times New Roman",
             serif;
 
-        /*
-           Размер зависит от размера artboard,
-           а не от ширины огромного монитора.
-        */
 
         font-size:
-            clamp(15px, 2.0vh, 30px);
 
-        font-weight: 400;
+            clamp(
+                15px,
+                2vh,
+                30px
+            );
 
-        line-height: 1;
 
-        letter-spacing: .10em;
+        font-weight:
+            400;
 
-        white-space: nowrap;
 
-        text-decoration: none;
+        line-height:
+            1;
 
-        opacity: .08;
 
-        pointer-events: auto;
+        letter-spacing:
+            .10em;
 
-        cursor: pointer;
 
-        user-select: none;
+        white-space:
+            nowrap;
+
+
+        text-decoration:
+            none;
+
+
+        opacity:
+            .08;
+
+
+        pointer-events:
+            auto;
+
+
+        cursor:
+            pointer;
+
+
+        user-select:
+            none;
+
 
         text-shadow:
 
             0 0 3px
-            rgba(255,255,255,.05);
+            rgba(255,255,255,.04);
+
 
         animation:
 
@@ -316,9 +494,11 @@
             ease-in-out
             infinite;
 
+
         transition:
 
             opacity .35s ease,
+
             text-shadow .35s ease;
 
     }
@@ -327,63 +507,46 @@
     /* =========================================================
        ПОЛОЖЕНИЕ НАДПИСЕЙ
 
-       Все координаты теперь относятся
-       к самой вертикальной композиции.
-
-       Они не зависят от разрешения монитора.
+       Координаты относятся К ARTBOARD,
+       а не к экрану.
        ========================================================= */
 
-
-    /* МЕБЕЛЬ */
 
     .menu-furniture {
 
         left: 65.0%;
-
         top: 16%;
 
     }
 
 
-    /* СКРИПТЫ */
-
     .menu-scripts {
 
         left: 72.3%;
-
         top: 20%;
 
     }
 
 
-    /* РАЗНОЕ */
-
     .menu-other {
 
         left: 79.0%;
-
         top: 24%;
 
     }
 
 
-    /* ПРОЗА */
-
     .menu-prose {
 
         left: 85.3%;
-
         top: 28%;
 
     }
 
 
-    /* ТЕКСТЫ */
-
     .menu-texts {
 
         left: 91.5%;
-
         top: 32%;
 
     }
@@ -396,9 +559,11 @@
     .menu-item:hover,
     .menu-item:focus-visible {
 
-        opacity: 1 !important;
+        opacity:
+            1 !important;
 
-        outline: none;
+        outline:
+            none;
 
         text-shadow:
 
@@ -406,13 +571,13 @@
             rgba(255,255,255,.75),
 
             0 0 20px
-            rgba(255,245,230,.30);
+            rgba(255,240,220,.28);
 
     }
 
 
     /* =========================================================
-       ДЫХАНИЕ ТЕКСТА
+       ДЫХАНИЕ НАДПИСЕЙ
        ========================================================= */
 
     @keyframes textBreath {
@@ -420,19 +585,21 @@
         0%,
         100% {
 
-            opacity: .07;
+            opacity:
+                .06;
 
             text-shadow:
 
                 0 0 2px
-                rgba(255,255,255,.03);
+                rgba(255,255,255,.025);
 
         }
 
 
         50% {
 
-            opacity: 1;
+            opacity:
+                1;
 
             text-shadow:
 
@@ -440,7 +607,7 @@
                 rgba(255,255,255,.58),
 
                 0 0 20px
-                rgba(255,240,220,.25);
+                rgba(255,240,220,.24);
 
         }
 
@@ -449,31 +616,55 @@
 
     /* =========================================================
        ЛОГОТИП
-
-       Логотип НЕ входит в картинку.
-       Это независимый слой страницы.
        ========================================================= */
 
     .logo {
 
-        position: fixed;
+        position:
+            fixed;
 
-        z-index: 30;
+        z-index:
+            30;
+
 
         left:
-            clamp(24px, 4vw, 80px);
+
+            clamp(
+                24px,
+                4vw,
+                80px
+            );
+
 
         top:
-            clamp(24px, 5vh, 75px);
+
+            clamp(
+                24px,
+                5vh,
+                75px
+            );
+
 
         width:
-            clamp(75px, 9vw, 155px);
 
-        opacity: .04;
+            clamp(
+                75px,
+                9vw,
+                155px
+            );
 
-        pointer-events: none;
 
-        user-select: none;
+        opacity:
+            .04;
+
+
+        pointer-events:
+            none;
+
+
+        user-select:
+            none;
+
 
         animation:
 
@@ -487,10 +678,14 @@
 
     .logo img {
 
-        display: block;
+        display:
+            block;
 
-        width: 100%;
-        height: auto;
+        width:
+            100%;
+
+        height:
+            auto;
 
     }
 
@@ -500,14 +695,16 @@
         0%,
         100% {
 
-            opacity: .035;
+            opacity:
+                .035;
 
         }
 
 
         50% {
 
-            opacity: .27;
+            opacity:
+                .27;
 
         }
 
@@ -515,22 +712,28 @@
 
 
     /* =========================================================
-       ПЕРЕХОД МЕЖДУ СТРАНИЦАМИ
+       ПЕРЕХОД В ДРУГОЙ РАЗДЕЛ
        ========================================================= */
 
     .transition-layer {
 
-        position: fixed;
+        position:
+            fixed;
 
-        inset: 0;
+        inset:
+            0;
 
-        z-index: 100;
+        z-index:
+            100;
 
-        opacity: 0;
+        opacity:
+            0;
 
-        pointer-events: none;
+        pointer-events:
+            none;
 
-        background: #fff;
+        background:
+            #ffffff;
 
         transition:
 
@@ -544,7 +747,8 @@
     body.leaving
     .transition-layer {
 
-        opacity: 1;
+        opacity:
+            1;
 
     }
 
@@ -552,11 +756,13 @@
     body.leaving
     .home {
 
-        opacity: 0;
+        opacity:
+            0;
 
         filter:
+
             blur(2px)
-            brightness(1.08);
+            brightness(1.05);
 
     }
 
@@ -564,17 +770,14 @@
     body.leaving
     .logo {
 
-        opacity: 0;
+        opacity:
+            0;
 
     }
 
 
     /* =========================================================
-       ВЕРТИКАЛЬНЫЕ ЭКРАНЫ
-
-       Если экран уже самого изображения,
-       artboard начинает определяться шириной,
-       чтобы ничего важного не обрезалось.
+       ОЧЕНЬ УЗКИЙ ВЕРТИКАЛЬНЫЙ ЭКРАН
        ========================================================= */
 
     @media
@@ -582,15 +785,20 @@
 
         .artboard {
 
-            width: 100vw;
+            width:
+                100vw;
 
-            height: auto;
+            height:
+                auto;
 
-            aspect-ratio: 9 / 16;
+            aspect-ratio:
+                9 / 16;
 
-            right: 0;
+            right:
+                0;
 
-            top: 50%;
+            top:
+                50%;
 
             transform:
                 translateY(-50%);
@@ -601,7 +809,7 @@
 
 
     /* =========================================================
-       ПЛАНШЕТ / МОБИЛЬНЫЙ
+       СМАРТФОН
        ========================================================= */
 
     @media
@@ -609,11 +817,14 @@
 
         .logo {
 
-            left: 5vw;
+            left:
+                5vw;
 
-            top: 4vh;
+            top:
+                4vh;
 
             width:
+
                 clamp(
                     68px,
                     19vw,
@@ -626,6 +837,7 @@
         .menu-item {
 
             font-size:
+
                 clamp(
                     14px,
                     3.7vw,
@@ -647,21 +859,24 @@
         .menu-item,
         .logo {
 
-            animation: none;
+            animation:
+                none;
 
         }
 
 
         .menu-item {
 
-            opacity: .8;
+            opacity:
+                .80;
 
         }
 
 
         .logo {
 
-            opacity: .16;
+            opacity:
+                .16;
 
         }
 
@@ -669,7 +884,8 @@
         .home,
         .transition-layer {
 
-            transition-duration: .25s;
+            transition-duration:
+                .25s;
 
         }
 
@@ -683,7 +899,7 @@
 
 
 <!-- =========================================================
-     ГЛАВНАЯ СТРАНИЦА
+     ГЛАВНАЯ
      ========================================================= -->
 
 <main
@@ -692,12 +908,7 @@
 >
 
 
-    <!--
-        Бархатное продолжение среды.
-
-        На широком экране оно занимает пространство
-        слева от вертикального эталона.
-    -->
+    <!-- ОБЩИЙ БАРХАТНЫЙ ФОН -->
 
     <div
         class="velvet-background"
@@ -707,12 +918,7 @@
 
 
     <!-- =====================================================
-         ARTBOARD
-
-         Внутри одной координатной системы находятся
-         и рисунок, и надписи.
-
-         Это гарантирует их совместное масштабирование.
+         ЕДИНАЯ КОМПОЗИЦИОННАЯ ПЛОСКОСТЬ
          ===================================================== -->
 
     <div
@@ -720,7 +926,7 @@
     >
 
 
-        <!-- ФОНОВЫЙ ЭТАЛОН -->
+        <!-- ЭТАЛОН -->
 
         <img
             class="artwork"
@@ -740,7 +946,10 @@
 
 
             <a
-                class="menu-item menu-furniture"
+                class="
+                    menu-item
+                    menu-furniture
+                "
 
                 href="furniture.html"
 
@@ -750,8 +959,12 @@
             </a>
 
 
+
             <a
-                class="menu-item menu-scripts"
+                class="
+                    menu-item
+                    menu-scripts
+                "
 
                 href="scripts.html"
 
@@ -761,8 +974,12 @@
             </a>
 
 
+
             <a
-                class="menu-item menu-other"
+                class="
+                    menu-item
+                    menu-other
+                "
 
                 href="other.html"
 
@@ -772,8 +989,12 @@
             </a>
 
 
+
             <a
-                class="menu-item menu-prose"
+                class="
+                    menu-item
+                    menu-prose
+                "
 
                 href="prose.html"
 
@@ -783,8 +1004,12 @@
             </a>
 
 
+
             <a
-                class="menu-item menu-texts"
+                class="
+                    menu-item
+                    menu-texts
+                "
 
                 href="texts.html"
 
@@ -795,6 +1020,7 @@
 
 
         </nav>
+
 
     </div>
 
@@ -856,7 +1082,7 @@
 
 
     /* =====================================================
-       ПЕРЕХОД ПО РАЗДЕЛАМ
+       ПЕРЕХОДЫ
        ===================================================== */
 
     links.forEach(link => {
@@ -866,11 +1092,6 @@
             "click",
             event => {
 
-
-                /*
-                   Стандартные браузерные комбинации
-                   не перехватываем.
-                */
 
                 if (
                     event.ctrlKey ||
@@ -912,24 +1133,18 @@
 
 
 
-                /*
-                   Устанавливаем цвет среды
-                   следующего раздела.
-                */
-
-                transitionLayer.style.backgroundColor =
+                transitionLayer
+                    .style
+                    .backgroundColor =
                     targetColor;
 
 
 
-                /*
-                   Запускаем растворение.
-                */
-
                 requestAnimationFrame(
                     () => {
 
-                        document.body
+                        document
+                            .body
                             .classList
                             .add(
                                 "leaving"
@@ -939,11 +1154,6 @@
                 );
 
 
-
-                /*
-                   После двух секунд
-                   открываем страницу.
-                */
 
                 window.setTimeout(
                     () => {
@@ -966,7 +1176,7 @@
 
 
     /* =====================================================
-       ВОЗВРАТ КНОПКОЙ BACK
+       ВОЗВРАТ КНОПКОЙ НАЗАД
        ===================================================== */
 
     window.addEventListener(
@@ -978,7 +1188,8 @@
                 false;
 
 
-            document.body
+            document
+                .body
                 .classList
                 .remove(
                     "leaving"
@@ -989,7 +1200,6 @@
                 .style
                 .backgroundColor =
                 "";
-
 
         }
     );
