@@ -1,146 +1,578 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
 
-  <title>meand.ru</title>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-  <style>
+<title>me/and.ru</title>
+
+<style>
+
+    /* =========================================================
+       ОСНОВНЫЕ НАСТРОЙКИ
+       ========================================================= */
+
+    :root {
+        --transition-time: 2s;
+        --breath-time: 5.5s;
+
+        /*
+           Положение всей гитарной навигации.
+           Меняем здесь — двигаются сразу все пункты.
+        */
+        --menu-right: clamp(22px, 5.5vw, 110px);
+
+        /*
+           Расстояние между струнами/пунктами.
+        */
+        --string-gap: clamp(44px, 5.7vw, 105px);
+    }
+
     * {
-      box-sizing: border-box;
+        box-sizing: border-box;
     }
 
     html,
     body {
-      margin: 0;
-      width: 100%;
-      height: 100%;
-      background: #20242a;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: #261006;
     }
 
     body {
-      overflow: hidden;
-      font-family: Arial, Helvetica, sans-serif;
+        font-family: Georgia, "Times New Roman", serif;
     }
 
-    .screen {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-      height: 100dvh;
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    /* =========================================================
+       ГЛАВНАЯ СЦЕНА
+       ========================================================= */
 
-      background: #20242a;
+    .home {
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+
+        background:
+            #261006
+            url("main-bg.png")
+            center center / cover
+            no-repeat;
+
+        opacity: 1;
+
+        transition:
+            opacity var(--transition-time) ease,
+            filter var(--transition-time) ease;
     }
+
+
+    /*
+       Небольшой дополнительный бархатный слой.
+       Он помогает избежать ощущения обычной картинки.
+    */
+
+    .home::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+
+        background:
+            radial-gradient(
+                circle at 85% 10%,
+                rgba(255, 172, 80, 0.055),
+                transparent 32%
+            ),
+            linear-gradient(
+                90deg,
+                rgba(0,0,0,.08),
+                transparent 45%,
+                rgba(0,0,0,.02)
+            );
+
+        z-index: 2;
+    }
+
+
+    /* =========================================================
+       ЛОГОТИП — ОТДЕЛЬНЫЙ СЛОЙ
+       ========================================================= */
 
     .logo {
-      position: absolute;
+        position: absolute;
 
-      left: 50%;
-      top: 50%;
+        left: clamp(25px, 5vw, 95px);
+        top: clamp(28px, 5vh, 80px);
 
-      transform: translate(-50%, -50%);
+        width: clamp(90px, 12vw, 190px);
 
-      width: min(90vw, 1536px);
-      height: auto;
+        z-index: 20;
 
-      display: block;
+        opacity: .13;
 
-      filter:
-        brightness(2.4)
-        contrast(1.15);
+        animation:
+            logoBreath var(--breath-time)
+            ease-in-out infinite;
 
-      animation: logoBreath 7s ease-in-out infinite;
+        user-select: none;
+        pointer-events: none;
     }
 
-    @keyframes logoBreath {
-      0%,
-      100% {
-        opacity: 0.12;
-        filter:
-          brightness(1.15)
-          contrast(1.05);
-      }
-
-      50% {
-        opacity: 1;
-        filter:
-          brightness(2.4)
-          contrast(1.15);
-      }
+    .logo img {
+        display: block;
+        width: 100%;
+        height: auto;
     }
 
-    .status {
-      position: absolute;
 
-      left: 50%;
-      bottom: 7%;
+    /* =========================================================
+       НАВИГАЦИЯ ПО СТРУНАМ
+       ========================================================= */
 
-      transform: translateX(-50%);
-
-      margin: 0;
-
-      font-size: clamp(13px, 1.1vw, 18px);
-      font-weight: 300;
-
-      letter-spacing: 0.32em;
-
-      white-space: nowrap;
-
-      animation: pulse 4s ease-in-out infinite;
+    .string-menu {
+        position: absolute;
+        inset: 0;
+        z-index: 15;
     }
 
-    @keyframes pulse {
-      0%,
-      100% {
-        color: #282d33;
-        opacity: 0.15;
-        text-shadow: none;
-      }
+    .menu-item {
+        position: absolute;
 
-      50% {
-        color: #ffffff;
-        opacity: 1;
+        /*
+           Текст вертикальный.
+           Это обычный HTML, поэтому качество не зависит
+           от разрешения монитора.
+        */
+        writing-mode: vertical-rl;
+        transform: translateX(50%);
+
+        color: white;
+
+        font-size: clamp(18px, 1.65vw, 31px);
+        font-weight: 400;
+
+        letter-spacing: .10em;
+
+        text-decoration: none;
+
+        opacity: .16;
 
         text-shadow:
-          0 0 8px rgba(255, 255, 255, 0.25),
-          0 0 18px rgba(255, 255, 255, 0.10);
-      }
+            0 0 8px rgba(255,255,255,.18),
+            0 0 18px rgba(255,235,210,.12);
+
+        animation:
+            textBreath var(--breath-time)
+            ease-in-out infinite;
+
+        transition:
+            opacity .35s ease,
+            text-shadow .35s ease;
+
+        cursor: pointer;
     }
 
-    @media (max-width: 600px) {
-      .logo {
-        width: 96vw;
-      }
 
-      .status {
-        bottom: 6%;
-        font-size: 11px;
-        letter-spacing: 0.22em;
-      }
+    /*
+       Вертикальные положения пунктов.
+       Их можно потом подогнать буквально по пикселям
+       под окончательный фон.
+    */
+
+    .menu-furniture {
+        top: 16%;
+        right:
+            calc(
+                var(--menu-right)
+                + var(--string-gap) * 4
+            );
     }
-  </style>
+
+    .menu-scripts {
+        top: 20%;
+        right:
+            calc(
+                var(--menu-right)
+                + var(--string-gap) * 3
+            );
+    }
+
+    .menu-other {
+        top: 24%;
+        right:
+            calc(
+                var(--menu-right)
+                + var(--string-gap) * 2
+            );
+    }
+
+    .menu-prose {
+        top: 28%;
+        right:
+            calc(
+                var(--menu-right)
+                + var(--string-gap)
+            );
+    }
+
+    .menu-texts {
+        top: 32%;
+        right: var(--menu-right);
+    }
+
+
+    /* При наведении */
+
+    .menu-item:hover,
+    .menu-item:focus-visible {
+        opacity: 1;
+
+        outline: none;
+
+        text-shadow:
+            0 0 8px rgba(255,255,255,.8),
+            0 0 22px rgba(255,255,255,.45);
+    }
+
+
+    /* =========================================================
+       ДЫХАНИЕ
+       ========================================================= */
+
+    @keyframes textBreath {
+
+        0%,
+        100% {
+            opacity: .10;
+
+            text-shadow:
+                0 0 3px rgba(255,255,255,.05);
+        }
+
+        50% {
+            opacity: 1;
+
+            text-shadow:
+                0 0 9px rgba(255,255,255,.65),
+                0 0 25px rgba(255,235,210,.30);
+        }
+    }
+
+
+    @keyframes logoBreath {
+
+        0%,
+        100% {
+            opacity: .05;
+        }
+
+        50% {
+            opacity: .30;
+        }
+    }
+
+
+    /* =========================================================
+       ПЕРЕХОД НА ДРУГУЮ СТРАНИЦУ
+       ========================================================= */
+
+    .transition-layer {
+        position: fixed;
+        inset: 0;
+
+        z-index: 100;
+
+        pointer-events: none;
+
+        opacity: 0;
+
+        background: white;
+
+        transition:
+            opacity var(--transition-time)
+            cubic-bezier(.45,0,.2,1);
+    }
+
+
+    /*
+       Начало перехода
+    */
+
+    body.leaving .transition-layer {
+        opacity: 1;
+    }
+
+    body.leaving .home {
+        opacity: 0;
+
+        filter:
+            blur(3px)
+            brightness(1.12);
+    }
+
+
+    /* =========================================================
+       МОБИЛЬНЫЙ РЕЖИМ
+       ========================================================= */
+
+    @media (max-width: 700px) {
+
+        :root {
+            --menu-right: 5vw;
+            --string-gap: 10.3vw;
+        }
+
+        .home {
+            /*
+               Вертикальная композиция сохраняется.
+               Никакого растягивания изображения.
+            */
+            background-position: center center;
+        }
+
+        .logo {
+            width: clamp(70px, 20vw, 115px);
+            left: 6vw;
+            top: 4vh;
+        }
+
+        .menu-item {
+            font-size: clamp(15px, 4.1vw, 20px);
+        }
+
+    }
+
+
+    /* =========================================================
+       ОЧЕНЬ ШИРОКИЕ МОНИТОРЫ
+       ========================================================= */
+
+    @media (min-aspect-ratio: 16/9) {
+
+        .home {
+            /*
+               На широком экране композицию держим справа,
+               чтобы гитарная часть не уезжала в центр.
+            */
+            background-position: center right;
+        }
+
+    }
+
+
+    /* =========================================================
+       REDUCED MOTION
+       ========================================================= */
+
+    @media (prefers-reduced-motion: reduce) {
+
+        .logo,
+        .menu-item {
+            animation: none;
+        }
+
+        .menu-item {
+            opacity: .8;
+        }
+
+        .logo {
+            opacity: .18;
+        }
+
+        .home,
+        .transition-layer {
+            transition-duration: .25s;
+        }
+
+    }
+
+</style>
 </head>
+
 
 <body>
 
-  <main class="screen">
+<!-- =========================================================
+     ГЛАВНАЯ
+     ========================================================= -->
 
-    <img
-      class="logo"
-      src="./logo.png"
-      alt=""
-    >
+<main class="home">
 
-    <p class="status">
-      САЙТ В РАЗРАБОТКЕ
-    </p>
+    <!-- ЛОГОТИП -->
 
-  </main>
+    <div class="logo">
+        <img src="logo.png" alt="">
+    </div>
+
+
+    <!-- НАВИГАЦИЯ -->
+
+    <nav class="string-menu" aria-label="Основные разделы">
+
+        <a
+            class="menu-item menu-furniture"
+            href="furniture.html"
+            data-color="#ffffff">
+            Мебель
+        </a>
+
+        <a
+            class="menu-item menu-scripts"
+            href="scripts.html"
+            data-color="#18382b">
+            Скрипты
+        </a>
+
+        <a
+            class="menu-item menu-other"
+            href="other.html"
+            data-color="#d8d0c4">
+            Разное
+        </a>
+
+        <a
+            class="menu-item menu-prose"
+            href="prose.html"
+            data-color="#332d2a">
+            Проза
+        </a>
+
+        <a
+            class="menu-item menu-texts"
+            href="texts.html"
+            data-color="#292929">
+            Тексты
+        </a>
+
+    </nav>
+
+</main>
+
+
+<!-- СЛОЙ ПЕРЕХОДА -->
+
+<div
+    class="transition-layer"
+    id="transitionLayer">
+</div>
+
+
+<script>
+
+(() => {
+
+    const links =
+        document.querySelectorAll(".menu-item");
+
+    const transitionLayer =
+        document.getElementById("transitionLayer");
+
+    let transitionStarted = false;
+
+
+    links.forEach(link => {
+
+        link.addEventListener("click", event => {
+
+            /*
+               Ctrl+click, Cmd+click и т.п.
+               оставляем браузеру.
+            */
+
+            if (
+                event.ctrlKey ||
+                event.metaKey ||
+                event.shiftKey ||
+                event.altKey
+            ) {
+                return;
+            }
+
+
+            event.preventDefault();
+
+            if (transitionStarted) {
+                return;
+            }
+
+            transitionStarted = true;
+
+
+            const destination =
+                link.href;
+
+            const targetColor =
+                link.dataset.color || "#ffffff";
+
+
+            /*
+               Новый цвет начинает постепенно
+               занимать весь экран.
+            */
+
+            transitionLayer.style.background =
+                targetColor;
+
+
+            /*
+               Запускаем растворение главной.
+            */
+
+            requestAnimationFrame(() => {
+
+                document.body.classList.add(
+                    "leaving"
+                );
+
+            });
+
+
+            /*
+               Переходим только после завершения
+               визуального превращения.
+            */
+
+            setTimeout(() => {
+
+                window.location.href =
+                    destination;
+
+            }, 2000);
+
+        });
+
+    });
+
+
+    /*
+       Если пользователь нажал Back,
+       браузер иногда восстанавливает страницу
+       из BFCache уже в состоянии leaving.
+       Возвращаем главную в исходное состояние.
+    */
+
+    window.addEventListener(
+        "pageshow",
+        () => {
+
+            transitionStarted = false;
+
+            document.body.classList.remove(
+                "leaving"
+            );
+
+        }
+    );
+
+})();
+
+</script>
 
 </body>
 </html>
