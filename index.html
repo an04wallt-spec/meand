@@ -11,20 +11,12 @@
 
 <title>me/and.ru</title>
 
-
 <style>
 
-    /* =========================================================
-       ОСНОВНЫЕ ПАРАМЕТРЫ
-       ========================================================= */
-
     :root {
-
         --main-dark: #080503;
-
         --breath-time: 5.5s;
         --page-transition-time: 2s;
-
     }
 
 
@@ -35,29 +27,26 @@
 
     html,
     body {
-
         width: 100%;
         height: 100%;
-
         margin: 0;
         padding: 0;
-
         overflow: hidden;
 
-        background: var(--main-dark);
-
+        /*
+           СТРОГО ОДНОРОДНЫЙ ЦВЕТ.
+           НИКАКИХ ГРАДИЕНТОВ.
+        */
+        background: #080503;
     }
 
 
     body {
-
         font-family:
             Georgia,
             "Times New Roman",
             serif;
-
     }
-
 
 
     /* =========================================================
@@ -65,19 +54,18 @@
        ========================================================= */
 
     .home {
-
         position: fixed;
-
         inset: 0;
-
         overflow: hidden;
 
-        background: var(--main-dark);
+        /*
+           СТРОГО ОДНОРОДНЫЙ ЦВЕТ.
+        */
+        background: #080503;
 
         opacity: 1;
 
         transition:
-
             opacity
             var(--page-transition-time)
             cubic-bezier(.45,0,.2,1),
@@ -85,44 +73,34 @@
             filter
             var(--page-transition-time)
             cubic-bezier(.45,0,.2,1);
-
     }
 
 
-
     /* =========================================================
-       ОСНОВНОЙ ФОН
+       ФОН
 
-       ВАЖНО:
-       здесь больше НЕТ CSS-градиентов.
-
-       Именно они давали заметные полосы
-       на большой диагонали.
-
-       Теперь вся свободная область имеет
-       абсолютно ровный цвет.
+       НИКАКИХ:
+       - linear-gradient
+       - radial-gradient
+       - псевдоэлементов
+       - виньеток
+       - подсветок
        ========================================================= */
 
     .velvet-background {
-
         position: absolute;
-
         inset: 0;
-
         z-index: 0;
 
         background: #080503;
-
     }
 
 
     .velvet-background::before,
     .velvet-background::after {
-
+        content: none;
         display: none;
-
     }
-
 
 
     /* =========================================================
@@ -130,13 +108,10 @@
        ========================================================= */
 
     .artboard {
-
         position: absolute;
-
         z-index: 5;
 
         right: 0;
-
         top: 50%;
 
         height: 100vh;
@@ -144,23 +119,24 @@
 
         aspect-ratio: 9 / 16;
 
-        transform:
-            translateY(-50%);
+        transform: translateY(-50%);
 
         overflow: visible;
-
     }
 
 
-
     /* =========================================================
-       ИЗОБРАЖЕНИЕ
+       ИЗОБРАЖЕНИЕ СО СТРУНАМИ
+
+       ВАЖНО:
+       CSS-РАСТВОРЕНИЕ ПОЛНОСТЬЮ УБРАНО.
+
+       Теперь отображается именно тот градиент,
+       который уже находится в вашем main-bg.png.
        ========================================================= */
 
     .artwork {
-
         position: absolute;
-
         inset: 0;
 
         width: 100%;
@@ -171,83 +147,33 @@
         display: block;
 
         pointer-events: none;
-
         user-select: none;
-
-
-        /* НЕ МЕНЯЕМ */
 
         opacity: .70;
 
-
-        /* НЕ МЕНЯЕМ */
-
         filter:
-
             brightness(.82)
             saturate(.78)
             contrast(.92);
 
+        /*
+           НИКАКОЙ CSS MASK.
+        */
 
-
-        /* =====================================================
-           ПЛАВНОЕ РАСТВОРЕНИЕ ЛЕВОЙ ЧАСТИ
-
-           Здесь всего один непрерывный переход.
-           ===================================================== */
-
-        -webkit-mask-image:
-
-            linear-gradient(
-                to right,
-
-                transparent 0%,
-                transparent 7%,
-                black 39%,
-                black 100%
-            );
-
-
-        mask-image:
-
-            linear-gradient(
-                to right,
-
-                transparent 0%,
-                transparent 7%,
-                black 39%,
-                black 100%
-            );
-
-
-        -webkit-mask-repeat:
-            no-repeat;
-
-        mask-repeat:
-            no-repeat;
-
-
-        -webkit-mask-size:
-            100% 100%;
-
-        mask-size:
-            100% 100%;
-
+        -webkit-mask-image: none;
+        mask-image: none;
     }
-
 
 
     /*
-       Никаких дополнительных градиентных
-       слоёв поверх изображения.
+       НИКАКИХ НАЛОЖЕНИЙ НА ИЗОБРАЖЕНИЕ.
     */
 
+    .artboard::before,
     .artboard::after {
-
+        content: none;
         display: none;
-
     }
-
 
 
     /* =========================================================
@@ -255,180 +181,119 @@
        ========================================================= */
 
     .string-menu {
-
         position: absolute;
-
         inset: 0;
 
         z-index: 20;
 
         pointer-events: none;
-
     }
 
 
-
     .menu-item {
-
         position: absolute;
 
-        writing-mode:
-            vertical-rl;
-
+        writing-mode: vertical-rl;
 
         transform:
-
             translateX(-50%)
             rotate(180deg);
 
+        transform-origin: center center;
 
-        transform-origin:
-            center center;
-
-
-        color:
-            #ffffff;
-
+        color: #ffffff;
 
         font-family:
-
             Georgia,
             "Times New Roman",
             serif;
 
-
         font-size:
-
             clamp(
                 15px,
                 2vh,
                 30px
             );
 
+        font-weight: 400;
 
-        font-weight:
-            400;
+        line-height: 1;
 
+        letter-spacing: .10em;
 
-        line-height:
-            1;
+        white-space: nowrap;
 
+        text-decoration: none;
 
-        letter-spacing:
-            .10em;
+        opacity: .08;
 
+        pointer-events: auto;
 
-        white-space:
-            nowrap;
+        cursor: pointer;
 
-
-        text-decoration:
-            none;
-
-
-        opacity:
-            .08;
-
-
-        pointer-events:
-            auto;
-
-
-        cursor:
-            pointer;
-
-
-        user-select:
-            none;
-
+        user-select: none;
 
         text-shadow:
-
             0 0 3px
             rgba(255,255,255,.04);
 
-
         animation:
-
             textBreath
             var(--breath-time)
             ease-in-out
             infinite;
 
-
         transition:
-
             opacity .35s ease,
-
             text-shadow .35s ease;
-
     }
-
 
 
     /* =========================================================
-       ПОЛОЖЕНИЕ НАДПИСЕЙ
+       ПОЗИЦИИ
 
-       По последнему скриншоту заново
-       определены оси первых двух струн.
-
-       Остальные три НЕ МЕНЯЕМ.
+       СЕЙЧАС МЕНЯЕМ ТОЛЬКО "СКРИПТЫ".
        ========================================================= */
 
 
-    /* МЕБЕЛЬ */
+    /* МЕБЕЛЬ — НЕ ТРОГАЕМ */
 
     .menu-furniture {
-
         left: 65.1%;
         top: 16%;
-
     }
 
 
-
-    /* СКРИПТЫ */
+    /* СКРИПТЫ — ЕДИНСТВЕННАЯ КОРРЕКТИРОВКА */
 
     .menu-scripts {
-
-        left: 72.8%;
+        left: 74.0%;
         top: 20%;
-
     }
 
 
-
-    /* РАЗНОЕ — НЕ МЕНЯЕМ */
+    /* РАЗНОЕ — НЕ ТРОГАЕМ */
 
     .menu-other {
-
         left: 80.4%;
         top: 24%;
-
     }
 
 
-
-    /* ПРОЗА — НЕ МЕНЯЕМ */
+    /* ПРОЗА — НЕ ТРОГАЕМ */
 
     .menu-prose {
-
         left: 87.5%;
         top: 28%;
-
     }
 
 
-
-    /* ТЕКСТЫ — НЕ МЕНЯЕМ */
+    /* ТЕКСТЫ — НЕ ТРОГАЕМ */
 
     .menu-texts {
-
         left: 94.0%;
         top: 32%;
-
     }
-
 
 
     /* =========================================================
@@ -437,21 +302,17 @@
 
     .menu-item:hover,
     .menu-item:focus-visible {
-
         opacity: 1 !important;
 
         outline: none;
 
         text-shadow:
-
             0 0 7px
             rgba(255,255,255,.75),
 
             0 0 20px
             rgba(255,240,220,.28);
-
     }
-
 
 
     /* =========================================================
@@ -462,33 +323,26 @@
 
         0%,
         100% {
-
             opacity: .06;
 
             text-shadow:
-
                 0 0 2px
                 rgba(255,255,255,.025);
-
         }
 
 
         50% {
-
             opacity: 1;
 
             text-shadow:
-
                 0 0 7px
                 rgba(255,255,255,.58),
 
                 0 0 20px
                 rgba(255,240,220,.24);
-
         }
 
     }
-
 
 
     /* =========================================================
@@ -496,86 +350,64 @@
        ========================================================= */
 
     .logo {
-
         position: fixed;
 
         z-index: 30;
 
-
         left:
-
             clamp(
                 24px,
                 4vw,
                 80px
             );
 
-
         top:
-
             clamp(
                 24px,
                 5vh,
                 75px
             );
 
-
         width:
-
             clamp(
                 75px,
                 9vw,
                 155px
             );
 
-
         opacity: .04;
 
         pointer-events: none;
-
         user-select: none;
 
-
         animation:
-
             logoBreath
             var(--breath-time)
             ease-in-out
             infinite;
-
     }
 
 
-
     .logo img {
-
         display: block;
 
         width: 100%;
         height: auto;
-
     }
-
 
 
     @keyframes logoBreath {
 
         0%,
         100% {
-
             opacity: .035;
-
         }
 
-
         50% {
-
             opacity: .27;
-
         }
 
     }
-
 
 
     /* =========================================================
@@ -583,7 +415,6 @@
        ========================================================= */
 
     .transition-layer {
-
         position: fixed;
 
         inset: 0;
@@ -597,45 +428,29 @@
         background: #ffffff;
 
         transition:
-
             opacity
             var(--page-transition-time)
             cubic-bezier(.45,0,.2,1);
-
     }
 
 
-
-    body.leaving
-    .transition-layer {
-
+    body.leaving .transition-layer {
         opacity: 1;
-
     }
 
 
-
-    body.leaving
-    .home {
-
+    body.leaving .home {
         opacity: 0;
 
         filter:
-
             blur(2px)
             brightness(1.05);
-
     }
 
 
-
-    body.leaving
-    .logo {
-
+    body.leaving .logo {
         opacity: 0;
-
     }
-
 
 
     /* =========================================================
@@ -646,24 +461,18 @@
     (max-aspect-ratio: 9/16) {
 
         .artboard {
-
             width: 100vw;
-
             height: auto;
 
             aspect-ratio: 9 / 16;
 
             right: 0;
-
             top: 50%;
 
-            transform:
-                translateY(-50%);
-
+            transform: translateY(-50%);
         }
 
     }
-
 
 
     /* =========================================================
@@ -674,36 +483,28 @@
     (max-width: 700px) {
 
         .logo {
-
             left: 5vw;
-
             top: 4vh;
 
             width:
-
                 clamp(
                     68px,
                     19vw,
                     105px
                 );
-
         }
 
 
         .menu-item {
-
             font-size:
-
                 clamp(
                     14px,
                     3.7vw,
                     20px
                 );
-
         }
 
     }
-
 
 
     /* =========================================================
@@ -715,31 +516,23 @@
 
         .menu-item,
         .logo {
-
             animation: none;
-
         }
 
 
         .menu-item {
-
             opacity: .80;
-
         }
 
 
         .logo {
-
             opacity: .16;
-
         }
 
 
         .home,
         .transition-layer {
-
             transition-duration: .25s;
-
         }
 
     }
@@ -764,7 +557,6 @@
     ></div>
 
 
-
     <div
         class="artboard"
     >
@@ -776,7 +568,6 @@
             alt=""
             draggable="false"
         >
-
 
 
         <nav
@@ -836,7 +627,6 @@
     </div>
 
 
-
     <div
         class="logo"
     >
@@ -853,7 +643,6 @@
 </main>
 
 
-
 <div
     class="transition-layer"
     id="transitionLayer"
@@ -861,11 +650,9 @@
 ></div>
 
 
-
 <script>
 
 (() => {
-
 
     const links =
         document.querySelectorAll(
@@ -879,18 +666,14 @@
         );
 
 
-    let transitionStarted =
-        false;
-
+    let transitionStarted = false;
 
 
     links.forEach(link => {
 
-
         link.addEventListener(
             "click",
             event => {
-
 
                 if (
                     event.ctrlKey ||
@@ -898,9 +681,7 @@
                     event.shiftKey ||
                     event.altKey
                 ) {
-
                     return;
-
                 }
 
 
@@ -908,9 +689,7 @@
 
 
                 if (transitionStarted) {
-
                     return;
-
                 }
 
 
@@ -955,22 +734,17 @@
                     2000
                 );
 
-
             }
         );
 
-
     });
-
 
 
     window.addEventListener(
         "pageshow",
         () => {
 
-
             transitionStarted = false;
-
 
             document
                 .body
@@ -984,7 +758,6 @@
 
         }
     );
-
 
 })();
 
