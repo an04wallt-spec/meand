@@ -75,7 +75,8 @@ const lineElements=currentPoem.lines.map(lineText=>{const line=document.createEl
 poemYear.textContent=currentPoem.year;
 function characterDelay(character){if(character===",")return 380;if(character==="."||character==="!"||character==="?")return 650;if(character===" ")return 60;return 95}
 const phrasePauses={
-"Время стирает всё":1000,
+"Время":1000,
+"Время стирает всё":2000,
 "Обиды.":1000,
 "Обиды. Слова и даты":2000,
 "Стирает друзей.":500,
