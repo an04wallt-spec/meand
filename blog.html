@@ -296,6 +296,30 @@
       });
     });
 
+    document.querySelectorAll('.entry__text').forEach((text) => {
+      const collapse = () => {
+        const entry = text.closest('.entry');
+        if (!entry || entry.classList.contains('is-collapsed')) return;
+        entry.classList.add('is-collapsed');
+        const title = entry.querySelector('.entry__title');
+        if (title) title.setAttribute('aria-expanded', 'false');
+      };
+
+      text.addEventListener('dblclick', collapse);
+
+      let lastTouch = 0;
+      text.addEventListener('touchend', (event) => {
+        const now = Date.now();
+        if (now - lastTouch < 350) {
+          event.preventDefault();
+          collapse();
+          lastTouch = 0;
+          return;
+        }
+        lastTouch = now;
+      }, { passive:false });
+    });
+
     const home = document.querySelector('[data-home]');
     if (home) {
       home.addEventListener('click', (event) => {
