@@ -110,7 +110,10 @@
       z-index:10;
       top:calc(env(safe-area-inset-top) + 24px);
       left:clamp(20px,6vw,42px);
+      display:block;
+      text-decoration:none;
       user-select:none;
+      -webkit-tap-highlight-color:transparent;
     }
 
     .brand__name{
@@ -245,10 +248,10 @@
   <div class="velvet" aria-hidden="true"></div>
   <div class="reading-shield" aria-hidden="true"></div>
 
-  <header class="brand">
+  <a class="brand" href="/" data-home aria-label="На главную">
     <span class="brand__name">ME AND.RU</span>
-    <a class="brand__home" href="/" data-home>на главную</a>
-  </header>
+    <span class="brand__home">на главную</span>
+  </a>
 
   <main class="feed" aria-label="Мысли и заметки">
 
