@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#160d0a">
+  <title>Мысли — meand.ru</title>
+
+  <style>
+    :root{
+      --bg-top:#24150f;
+      --bg-mid:#170d0a;
+      --bg-bottom:#0d0806;
+      --copper:#c2855b;
+      --text:#bd8c6e;
+      --muted:#8d644d;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    html{
+      min-height:100%;
+      background:#0d0806;
+    }
+
+    body{
+      margin:0;
+      min-height:100dvh;
+      overflow-x:hidden;
+      color:var(--text);
+      font-family:Georgia, "Times New Roman", serif;
+      -webkit-font-smoothing:antialiased;
+      background:transparent;
+      opacity:0;
+      animation:page-in 1.05s ease forwards;
+    }
+
+    /* Статичный бархатный фон */
+    .velvet{
+      position:fixed;
+      inset:0;
+      z-index:-3;
+      pointer-events:none;
+      background:
+        radial-gradient(
+          115% 33% at 50% -5%,
+          rgba(208,137,87,.21) 0%,
+          rgba(121,70,43,.12) 27%,
+          rgba(31,17,12,0) 69%
+        ),
+        radial-gradient(
+          95% 78% at 48% 31%,
+          rgba(77,41,27,.15) 0%,
+          rgba(25,14,10,.08) 55%,
+          rgba(8,5,4,.22) 100%
+        ),
+        linear-gradient(
+          180deg,
+          var(--bg-top) 0%,
+          var(--bg-mid) 53%,
+          var(--bg-bottom) 100%
+        );
+    }
+
+    .velvet::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      opacity:.10;
+      background-image:
+        repeating-radial-gradient(
+          circle at 31% 19%,
+          rgba(255,255,255,.035) 0 1px,
+          transparent 1px 4px
+        );
+      mix-blend-mode:soft-light;
+    }
+
+    /* Неподвижная надпись */
+    .brand{
+      position:fixed;
+      z-index:10;
+      top:calc(env(safe-area-inset-top) + 24px);
+      left:clamp(20px,6vw,42px);
+      user-select:none;
+    }
+
+    .brand__name{
+      display:block;
+      color:var(--copper);
+      font-family:Arial,Helvetica,sans-serif;
+      font-size:clamp(25px,7.5vw,36px);
+      font-weight:500;
+      line-height:1;
+      letter-spacing:.11em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+
+    .brand__home{
+      display:inline-block;
+      margin-top:10px;
+      color:var(--muted);
+      font-family:Arial,Helvetica,sans-serif;
+      font-size:13px;
+      line-height:1;
+      letter-spacing:.12em;
+      text-decoration:none;
+      text-transform:lowercase;
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    /* Скроллится только содержимое страницы */
+    .feed{
+      width:min(90vw,760px);
+      margin:0 auto;
+      padding:
+        calc(env(safe-area-inset-top) + 145px)
+        0
+        calc(env(safe-area-inset-bottom) + 18vh);
+    }
+
+    .entry{
+      margin:0 0 70px;
+      padding:0;
+    }
+
+    .entry__title{
+      display:block;
+      width:100%;
+      margin:0;
+      padding:0;
+      border:0;
+      background:none;
+      color:var(--copper);
+      font:400 clamp(31px,9vw,45px)/1.14 Georgia,"Times New Roman",serif;
+      text-align:left;
+      letter-spacing:.003em;
+      cursor:pointer;
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    .entry--title-only{
+      margin-bottom:38px;
+    }
+
+    .entry--title-only .entry__title{
+      cursor:default;
+    }
+
+    .entry__body{
+      display:grid;
+      grid-template-rows:1fr;
+      transition:grid-template-rows .42s ease, opacity .32s ease, margin-top .42s ease;
+      opacity:1;
+      margin-top:22px;
+    }
+
+    .entry__body-inner{
+      min-height:0;
+      overflow:hidden;
+    }
+
+    .entry__text{
+      margin:0;
+      color:var(--text);
+      font-size:clamp(25px,7vw,35px);
+      line-height:1.52;
+      letter-spacing:.002em;
+      overflow-wrap:anywhere;
+    }
+
+    .entry.is-collapsed .entry__body{
+      grid-template-rows:0fr;
+      opacity:0;
+      margin-top:0;
+    }
+
+    @keyframes page-in{
+      from{opacity:0}
+      to{opacity:1}
+    }
+
+    body.is-leaving{
+      animation:none;
+      opacity:0;
+      transition:opacity .65s ease;
+    }
+
+    @media (min-width:800px){
+      .feed{
+        width:min(72vw,760px);
+        padding-top:165px;
+      }
+
+      .entry{
+        margin-bottom:88px;
+      }
+
+      .entry__title{
+        font-size:42px;
+      }
+
+      .entry__text{
+        font-size:30px;
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      body{
+        animation:none;
+        opacity:1;
+      }
+
+      .entry__body,
+      body.is-leaving{
+        transition:none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="velvet" aria-hidden="true"></div>
+
+  <header class="brand">
+    <span class="brand__name">ME AND.RU</span>
+    <a class="brand__home" href="/" data-home>на главную</a>
+  </header>
+
+  <main class="feed" aria-label="Мысли и заметки">
+
+    <!--
+      Каждая запись состоит только из двух вещей:
+      1. заголовок;
+      2. текст.
+
+      В дальнейшем приложение "Мысли" сможет добавлять сюда записи автоматически.
+    -->
+
+    <article class="entry">
+      <button class="entry__title"
+              type="button"
+              aria-expanded="true">
+        Тишина внутри
+      </button>
+
+      <div class="entry__body">
+        <div class="entry__body-inner">
+          <p class="entry__text">
+            Иногда мысль приходит раньше, чем слова для неё.
+            И тогда, наверное, не нужно торопиться её объяснять.
+            Достаточно просто оставить здесь — такой, какой она появилась.
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <article class="entry entry--title-only">
+      <h2 class="entry__title">Маленькие радости</h2>
+    </article>
+
+    <article class="entry entry--title-only">
+      <h2 class="entry__title">Новый этап</h2>
+    </article>
+
+    <article class="entry entry--title-only">
+      <h2 class="entry__title">О простых вещах</h2>
+    </article>
+
+    <article class="entry entry--title-only">
+      <h2 class="entry__title">Благодарность</h2>
+    </article>
+
+    <article class="entry entry--title-only">
+      <h2 class="entry__title">В движении</h2>
+    </article>
+
+  </main>
+
+  <script>
+    document.querySelectorAll('.entry__title').forEach((title) => {
+      title.addEventListener('click', () => {
+        const entry = title.closest('.entry');
+        const collapsed = entry.classList.toggle('is-collapsed');
+        title.setAttribute('aria-expanded', String(!collapsed));
+      });
+    });
+
+    const home = document.querySelector('[data-home]');
+    if (home) {
+      home.addEventListener('click', (event) => {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        event.preventDefault();
+        document.body.classList.add('is-leaving');
+
+        window.setTimeout(() => {
+          window.location.href = home.href;
+        }, 650);
+      });
+    }
+  </script>
+</body>
+</html>
