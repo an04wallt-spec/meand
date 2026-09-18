@@ -78,6 +78,32 @@
       mix-blend-mode:soft-light;
     }
 
+    /* Верхняя граница: текст ленты под неё не проходит */
+    .reading-shield{
+      position:fixed;
+      z-index:8;
+      top:0;
+      left:0;
+      width:100%;
+      height:calc(env(safe-area-inset-top) + 112px);
+      pointer-events:none;
+      background:
+        radial-gradient(115% 33% at 50% -5%,rgba(208,137,87,.21) 0%,rgba(121,70,43,.12) 27%,rgba(31,17,12,0) 69%),
+        radial-gradient(95% 78% at 48% 31%,rgba(77,41,27,.15) 0%,rgba(25,14,10,.08) 55%,rgba(8,5,4,.22) 100%),
+        linear-gradient(180deg,var(--bg-top) 0%,var(--bg-mid) 53%,var(--bg-bottom) 100%);
+      background-size:100vw 100dvh;
+      background-position:top left;
+    }
+
+    .reading-shield::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      opacity:.10;
+      background-image:repeating-radial-gradient(circle at 31% 19%,rgba(255,255,255,.035) 0 1px,transparent 1px 4px);
+      mix-blend-mode:soft-light;
+    }
+
     /* Неподвижная надпись */
     .brand{
       position:fixed;
@@ -140,14 +166,6 @@
       letter-spacing:.003em;
       cursor:pointer;
       -webkit-tap-highlight-color:transparent;
-    }
-
-    .entry--title-only{
-      margin-bottom:38px;
-    }
-
-    .entry--title-only .entry__title{
-      cursor:default;
     }
 
     .entry__body{
@@ -225,6 +243,7 @@
 
 <body>
   <div class="velvet" aria-hidden="true"></div>
+  <div class="reading-shield" aria-hidden="true"></div>
 
   <header class="brand">
     <span class="brand__name">ME AND.RU</span>
@@ -233,13 +252,6 @@
 
   <main class="feed" aria-label="Мысли и заметки">
 
-    <!--
-      Каждая запись состоит только из двух вещей:
-      1. заголовок;
-      2. текст.
-
-      В дальнейшем приложение "Мысли" сможет добавлять сюда записи автоматически.
-    -->
 
     <!-- BLOG_POSTS_START -->
     <article class="entry is-collapsed" id="post-a9aed62a-25e6-455a-a3b9-2e312664af42">
@@ -251,44 +263,6 @@
       </div></div>
     </article>
 
-
-    <article class="entry">
-      <button class="entry__title"
-              type="button"
-              aria-expanded="true">
-        Тишина внутри
-      </button>
-
-      <div class="entry__body">
-        <div class="entry__body-inner">
-          <p class="entry__text">
-            Иногда мысль приходит раньше, чем слова для неё.
-            И тогда, наверное, не нужно торопиться её объяснять.
-            Достаточно просто оставить здесь — такой, какой она появилась.
-          </p>
-        </div>
-      </div>
-    </article>
-
-    <article class="entry entry--title-only">
-      <h2 class="entry__title">Маленькие радости</h2>
-    </article>
-
-    <article class="entry entry--title-only">
-      <h2 class="entry__title">Новый этап</h2>
-    </article>
-
-    <article class="entry entry--title-only">
-      <h2 class="entry__title">О простых вещах</h2>
-    </article>
-
-    <article class="entry entry--title-only">
-      <h2 class="entry__title">Благодарность</h2>
-    </article>
-
-    <article class="entry entry--title-only">
-      <h2 class="entry__title">В движении</h2>
-    </article>
 
   </main>
 
