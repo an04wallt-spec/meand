@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
 
   @Override public void onCreate(Bundle b){super.onCreate(b);getWindow().setStatusBarColor(bg);getWindow().setNavigationBarColor(bg);db=new NotesDb();showFeed();if(token().isEmpty())root.postDelayed(this::settings,350);}
 
-  LinearLayout base(){LinearLayout v=new LinearLayout(this);v.setOrientation(LinearLayout.VERTICAL);v.setPadding(dp(22),dp(18),dp(22),dp(18));v.setBackgroundColor(bg);return v;}
+  LinearLayout base(){LinearLayout v=new LinearLayout(this);v.setOrientation(LinearLayout.VERTICAL);v.setPadding(dp(22),dp(18),dp(22),dp(18));v.setBackgroundColor(bg);v.setOnApplyWindowInsetsListener((view,insets)->{view.setPadding(dp(22),dp(18)+insets.getSystemWindowInsetTop(),dp(22),dp(18)+insets.getSystemWindowInsetBottom());return insets;});v.requestApplyInsets();return v;}
   TextView tv(String s,float z,int c){TextView v=new TextView(this);v.setText(s);v.setTextSize(z);v.setTextColor(c);return v;}
   View header(String label,String action,View.OnClickListener click){LinearLayout h=new LinearLayout(this);h.setGravity(Gravity.CENTER_VERTICAL);TextView name=tv(label,27,copper);name.setTypeface(Typeface.create("sans-serif",0));name.setLetterSpacing(.12f);h.addView(name,new LinearLayout.LayoutParams(0,dp(56),1));TextView a=tv(action,action.equals("‹")?42:29,muted);a.setGravity(Gravity.CENTER);a.setOnClickListener(click);h.addView(a,new LinearLayout.LayoutParams(dp(56),dp(56)));return h;}
 
