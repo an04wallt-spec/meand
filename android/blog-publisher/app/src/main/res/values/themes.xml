@@ -1,0 +1,10 @@
+<resources>
+    <style name="Theme.Mysli" parent="android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:fontFamily">serif</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:statusBarColor">#140B08</item>
+        <item name="android:navigationBarColor">#140B08</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:colorAccent">#C2855B</item>
+    </style>
+</resources>

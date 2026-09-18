@@ -1,0 +1,7 @@
+<resources>
+    <color name="background">#140B08</color>
+    <color name="surface">#21120D</color>
+    <color name="copper">#C2855B</color>
+    <color name="text">#E2C0A8</color>
+    <color name="muted">#98715B</color>
+</resources>

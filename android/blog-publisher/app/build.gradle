@@ -1,0 +1,32 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'ru.meand.mysli'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'ru.meand.mysli'
+        minSdk 26
+        targetSdk 35
+        versionCode 1
+        versionName '1.0'
+    }
+
+    signingConfigs {
+        release {
+            storeFile file('../keystore/mysli.jks')
+            storePassword 'meand-mysli-2026'
+            keyAlias 'mysli'
+            keyPassword 'meand-mysli-2026'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+    }
+}
