@@ -29,6 +29,7 @@ body{font-family:Georgia,"Times New Roman",serif}
 .artwork{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;user-select:none;opacity:.70;filter:brightness(.82) saturate(.78) contrast(.92);-webkit-mask-image:linear-gradient(to right,transparent 0%,transparent 5%,rgba(0,0,0,.02) 10%,rgba(0,0,0,.07) 15%,rgba(0,0,0,.16) 20%,rgba(0,0,0,.30) 25%,rgba(0,0,0,.48) 30%,rgba(0,0,0,.68) 35%,rgba(0,0,0,.84) 40%,rgba(0,0,0,.95) 45%,black 50%,black 100%);mask-image:linear-gradient(to right,transparent 0%,transparent 5%,rgba(0,0,0,.02) 10%,rgba(0,0,0,.07) 15%,rgba(0,0,0,.16) 20%,rgba(0,0,0,.30) 25%,rgba(0,0,0,.48) 30%,rgba(0,0,0,.68) 35%,rgba(0,0,0,.84) 40%,rgba(0,0,0,.95) 45%,black 50%,black 100%);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:100% 100%;mask-size:100% 100%}
 .artboard::before,.artboard::after{content:none;display:none}
 .string-menu{position:absolute;inset:0;z-index:20;pointer-events:none}
+.blog-hotspot{display:none}
 .menu-item{position:absolute;writing-mode:vertical-rl;transform:translateX(-50%) rotate(180deg);transform-origin:center center;color:#fff;font-family:Georgia,"Times New Roman",serif;font-size:clamp(15px,2vh,30px);font-weight:400;line-height:1;letter-spacing:.10em;white-space:nowrap;text-decoration:none;opacity:.08;pointer-events:auto;cursor:pointer;user-select:none;text-shadow:0 0 3px rgba(255,255,255,.04);animation:textBreath var(--breath-time) ease-in-out infinite;transition:opacity .35s ease,text-shadow .35s ease}
 .menu-furniture{left:66.0%;top:16%}.menu-scripts{left:73.4%;top:20%}.menu-other{left:80.4%;top:24%}.menu-prose{left:87.5%;top:28%}.menu-texts{left:94.0%;top:32%}
 .menu-item:hover,.menu-item:focus-visible{opacity:1!important;outline:none;text-shadow:0 0 7px rgba(255,255,255,.75),0 0 20px rgba(255,240,220,.28)}
@@ -43,7 +44,7 @@ body{font-family:Georgia,"Times New Roman",serif}
 .transition-layer{position:fixed;inset:0;z-index:100;opacity:0;pointer-events:none;background:#fff;transition:opacity var(--page-transition-time) cubic-bezier(.45,0,.2,1)}
 body.leaving .transition-layer{opacity:1}body.leaving .home{opacity:0;filter:blur(2px) brightness(1.05)}
 @media(max-aspect-ratio:9/16){.artboard{width:100vw;height:auto;aspect-ratio:9/16;right:0;top:50%;transform:translateY(-50%)}}
-@media(max-width:700px){.menu-item{font-size:clamp(14px,3.7vw,20px)}.poem{left:4vw;bottom:clamp(8px,1.5vh,18px);top:auto;transform:none;max-width:61vw;font-size:clamp(12px,3.35vw,17px);line-height:1.70;letter-spacing:.01em;white-space:nowrap;opacity:.72}.poem-line{min-height:1.70em}.poem-year{margin-top:.55em}}
+@media(max-width:700px){.menu-item{font-size:clamp(14px,3.7vw,20px)}.blog-hotspot{display:block;position:absolute;z-index:30;left:57%;top:57%;width:43%;height:43%;border:0;background:transparent;text-decoration:none;-webkit-tap-highlight-color:transparent}.blog-hotspot:focus-visible{outline:1px solid rgba(255,255,255,.28);outline-offset:-6px}.poem{left:4vw;bottom:clamp(8px,1.5vh,18px);top:auto;transform:none;max-width:61vw;font-size:clamp(12px,3.35vw,17px);line-height:1.70;letter-spacing:.01em;white-space:nowrap;opacity:.72}.poem-line{min-height:1.70em}.poem-year{margin-top:.55em}}
 @media(prefers-reduced-motion:reduce){.menu-item{animation:none}.menu-item{opacity:.80}.home,.transition-layer{transition-duration:.25s}.poem-char{opacity:1;transition:none}.poem-year{opacity:.72;transition:none}}
 </style>
 <script type="application/ld+json">
@@ -76,6 +77,7 @@ body.leaving .transition-layer{opacity:1}body.leaving .home{opacity:0;filter:blu
 <a class="menu-item menu-prose" href="prose.html" data-color="#332d2a">Проза</a>
 <a class="menu-item menu-texts" href="texts.html" data-color="#292929">Тексты</a>
 </nav>
+<a class="blog-hotspot" href="blog.html" data-color="#160d0a" aria-label="Мысли"></a>
 </div>
 <section class="poem" id="poem" aria-label="Стихотворение"><div class="poem-text" id="poemText"></div><span class="poem-year" id="poemYear"></span></section>
 </main>
@@ -115,7 +117,7 @@ await sleep(10000);
 for(let lineIndex=0;lineIndex<currentPoem.lines.length;lineIndex++)await revealLine(currentPoem.lines[lineIndex],lineElements[lineIndex]);
 poemYear.classList.add("visible")}
 revealPoem();
-const links=document.querySelectorAll(".menu-item");const transitionLayer=document.getElementById("transitionLayer");let transitionStarted=false;
+const links=document.querySelectorAll(".menu-item,.blog-hotspot");const transitionLayer=document.getElementById("transitionLayer");let transitionStarted=false;
 links.forEach(link=>{link.addEventListener("click",event=>{if(event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;event.preventDefault();if(transitionStarted)return;transitionStarted=true;const destination=link.href;const targetColor=link.dataset.color||"#ffffff";transitionLayer.style.backgroundColor=targetColor;requestAnimationFrame(()=>document.body.classList.add("leaving"));window.setTimeout(()=>{window.location.href=destination},2000)})});
 window.addEventListener("pageshow",()=>{transitionStarted=false;document.body.classList.remove("leaving");transitionLayer.style.backgroundColor=""});
 })();
