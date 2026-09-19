@@ -46,6 +46,19 @@ body.leaving .transition-layer{opacity:1}body.leaving .home{opacity:0;filter:blu
 @media(max-aspect-ratio:9/16){.artboard{width:100vw;height:auto;aspect-ratio:9/16;right:0;top:50%;transform:translateY(-50%)}}
 @media(max-width:700px){.menu-item{font-size:clamp(14px,3.7vw,20px)}.blog-hotspot{display:block;position:absolute;z-index:30;left:82%;top:72%;width:12%;height:12%;border:0;border-radius:50%;background:transparent;text-decoration:none;-webkit-tap-highlight-color:transparent}.blog-hotspot:focus-visible{outline:1px solid rgba(255,255,255,.28);outline-offset:-6px}.poem{left:4vw;bottom:clamp(8px,1.5vh,18px);top:auto;transform:none;max-width:61vw;font-size:clamp(12px,3.35vw,17px);line-height:1.70;letter-spacing:.01em;white-space:nowrap;opacity:.72}.poem-line{min-height:1.70em}.poem-year{margin-top:.55em}}
 @media(prefers-reduced-motion:reduce){.menu-item{animation:none}.menu-item{opacity:.80}.home,.transition-layer{transition-duration:.25s}.poem-char{opacity:1;transition:none}.poem-year{opacity:.72;transition:none}}
+
+/* Sparse, non-interactive light drifting above the artwork. */
+.light-dust{position:absolute;inset:0;z-index:10;overflow:hidden;pointer-events:none;contain:strict}
+.light-dust span{position:absolute;left:var(--x);top:var(--y);width:var(--size);height:var(--size);border-radius:50%;background:#fff0cf;box-shadow:0 0 5px 1px #edb76b80;opacity:0;animation:lightDrift var(--duration) var(--delay) linear infinite;will-change:transform,opacity}
+@keyframes lightDrift{
+0%{transform:translate3d(0,0,0);opacity:0}
+18%{opacity:var(--glow)}
+42%{transform:translate3d(var(--mx),var(--my),0);opacity:calc(var(--glow) * .45)}
+62%{opacity:var(--glow)}
+100%{transform:translate3d(var(--dx),var(--dy),0);opacity:0}
+}
+@media(prefers-reduced-motion:reduce){.light-dust{display:none}.light-dust span{animation:none}}
+
 </style>
 <script type="application/ld+json">
 {
@@ -67,6 +80,7 @@ body.leaving .transition-layer{opacity:1}body.leaving .home{opacity:0;filter:blu
 </head>
 <body>
 <main class="home" id="home">
+<div class="light-dust" data-scene="home" aria-hidden="true"></div>
 <div class="velvet-background" aria-hidden="true"></div>
 <div class="artboard">
 <img class="artwork" src="main-bg.png" alt="" draggable="false">
@@ -122,5 +136,45 @@ links.forEach(link=>{link.addEventListener("click",event=>{if(event.ctrlKey||eve
 window.addEventListener("pageshow",()=>{transitionStarted=false;document.body.classList.remove("leaving");transitionLayer.style.backgroundColor=""});
 })();
 </script>
+
+<script>
+(() => {
+    const layer = document.querySelector('.light-dust');
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const home = layer.dataset.scene === 'home';
+    const between = (min, max) => min + Math.random() * (max - min);
+    function setup() {
+        layer.replaceChildren();
+        if (motion.matches) return;
+        for (let i = 0; i < (home ? 24 : 20); i++) {
+            const spark = document.createElement('span');
+            const x = home ? between(76, 100) : between(2, 98);
+            const y = between(-2, 8);
+            const dx = home ? between(43, 57) - x : between(-9, 9);
+            const dy = home ? between(37, 51) - y : between(9, 23);
+            const values = {
+                x: x + '%', y: y + '%', size: between(1, 2.5) + 'px',
+                mx: (dx * .45 + between(-3, 3)) + 'vw',
+                my: (dy * .4 + between(-2, 2)) + 'vh',
+                dx: dx + 'vw', dy: dy + 'vh',
+                duration: between(13, 24) + 's', delay: -between(0, 24) + 's',
+                glow: between(.25, .65)
+            };
+            Object.entries(values).forEach(([key, value]) => spark.style.setProperty('--' + key, value));
+            layer.appendChild(spark);
+        }
+        pauseWhenHidden();
+    }
+    function pauseWhenHidden() {
+        layer.querySelectorAll('span').forEach(spark => {
+            spark.style.animationPlayState = document.hidden ? 'paused' : 'running';
+        });
+    }
+    document.addEventListener('visibilitychange', pauseWhenHidden);
+    motion.addEventListener('change', setup);
+    setup();
+})();
+</script>
+
 </body>
 </html>
