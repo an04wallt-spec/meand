@@ -93,11 +93,11 @@ body.leaving .transition-layer{opacity:1}body.leaving .home{opacity:0;filter:blu
 <div class="artboard">
 <img class="artwork" src="main-bg.png" alt="" draggable="false">
 <nav class="string-menu" aria-label="Основные разделы">
-<a class="menu-item menu-furniture" href="https://kb911.ru/" data-color="#ffffff">Мебель</a>
-<a class="menu-item menu-scripts" href="scripts.html" data-color="#18382b">Мастерская</a>
-<a class="menu-item menu-other" href="other.html" data-color="#d8d0c4">Разное</a>
-<a class="menu-item menu-prose" href="prose.html" data-color="#332d2a">Проза</a>
-<a class="menu-item menu-texts" href="texts.html" data-color="#292929">Тексты</a>
+<a class="menu-item menu-furniture" href="https://kb911.ru/" data-color="#ffffff" data-sound="https://cdn.jsdelivr.net/npm/tonejs-instrument-guitar-acoustic-wav@1.1.0/E2.wav">Мебель</a>
+<a class="menu-item menu-scripts" href="scripts.html" data-color="#18382b" data-sound="https://cdn.jsdelivr.net/npm/tonejs-instrument-guitar-acoustic-wav@1.1.0/A2.wav">Мастерская</a>
+<a class="menu-item menu-other" href="other.html" data-color="#d8d0c4" data-sound="https://cdn.jsdelivr.net/npm/tonejs-instrument-guitar-acoustic-wav@1.1.0/D3.wav">Разное</a>
+<a class="menu-item menu-prose" href="prose.html" data-color="#332d2a" data-sound="https://cdn.jsdelivr.net/npm/tonejs-instrument-guitar-acoustic-wav@1.1.0/G3.wav">Проза</a>
+<a class="menu-item menu-texts" href="texts.html" data-color="#292929" data-sound="https://cdn.jsdelivr.net/npm/tonejs-instrument-guitar-acoustic-wav@1.1.0/B3.wav">Тексты</a>
 </nav>
 <a class="blog-hotspot" href="blog.html" data-color="#160d0a" aria-label="Мысли"></a>
 </div>
@@ -143,6 +143,8 @@ revealPoem();
 const links=document.querySelectorAll(".menu-item,.blog-hotspot");
 const transitionLayer=document.getElementById("transitionLayer");
 const stringFlash=document.getElementById("stringFlash");
+const stringAudio=new Map();
+document.querySelectorAll(".menu-item[data-sound]").forEach(link=>{const audio=new Audio(link.dataset.sound);audio.preload="auto";stringAudio.set(link,audio)});
 let transitionStarted=false;
 let navigationTimer;
 links.forEach(link=>link.addEventListener("click",event=>{
@@ -154,6 +156,8 @@ links.forEach(link=>link.addEventListener("click",event=>{
     const stringLink=link.classList.contains("menu-item");
     const motionReduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if(stringLink){
+        const audio=stringAudio.get(link);
+        if(audio){audio.currentTime=0;const playPromise=audio.play();if(playPromise&&typeof playPromise.catch==="function")playPromise.catch(()=>{})}
         const bounds=link.getBoundingClientRect();
         stringFlash.style.left=(bounds.left+bounds.width/2)+"px";
         stringFlash.style.top=(bounds.top+bounds.height/2)+"px";
