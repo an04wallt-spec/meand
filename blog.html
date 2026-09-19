@@ -8,13 +8,12 @@
 
   <style>
     :root{
-      --bg-top:#24150f;
-      --bg-mid:#170d0a;
-      --bg-bottom:#0d0806;
       --copper:#c2855b;
       --text:#bd8c6e;
       --muted:#8d644d;
-      --blog-bg:url("/180926.png");}
+      --blog-bg:url("/180926.png");
+    }
+
     *{
       box-sizing:border-box;
     }
@@ -36,20 +35,25 @@
       animation:page-in 1.05s ease forwards;
     }
 
-    /* Статичный отрисованный фон */
+    /* Единственный фон страницы */
     .velvet{
       position:fixed;
       inset:0;
       z-index:0;
       pointer-events:none;
-      background-color:#100806;
+
       background-image:var(--blog-bg);
       background-repeat:no-repeat;
       background-position:center top;
       background-size:100vw auto;
+      background-color:transparent;
     }
 
-    /* Верхняя граница: текст ленты под неё не проходит */
+    /*
+      Верхняя граница для текста.
+      Никакого собственного фона здесь больше нет,
+      поэтому 180926.png ничем не перекрывается.
+    */
     .reading-shield{
       position:fixed;
       z-index:8;
@@ -58,11 +62,7 @@
       width:100%;
       height:calc(env(safe-area-inset-top) + 112px);
       pointer-events:none;
-      background-color:#100806;
-      background-image:var(--blog-bg);
-      background-repeat:no-repeat;
-      background-position:center top;
-      background-size:100vw auto;
+      background:transparent;
     }
 
     /* Неподвижная надпись */
@@ -137,7 +137,10 @@
     .entry__body{
       display:grid;
       grid-template-rows:1fr;
-      transition:grid-template-rows .42s ease, opacity .32s ease, margin-top .42s ease;
+      transition:
+        grid-template-rows .42s ease,
+        opacity .32s ease,
+        margin-top .42s ease;
       opacity:1;
       margin-top:22px;
     }
@@ -164,8 +167,13 @@
     }
 
     @keyframes page-in{
-      from{opacity:0}
-      to{opacity:1}
+      from{
+        opacity:0;
+      }
+
+      to{
+        opacity:1;
+      }
     }
 
     body.is-leaving{
@@ -208,6 +216,7 @@
 </head>
 
 <body>
+
   <div class="velvet" aria-hidden="true"></div>
   <div class="reading-shield" aria-hidden="true"></div>
 
@@ -220,21 +229,34 @@
 
 
     <!-- BLOG_POSTS_START -->
+
     <article class="entry is-collapsed" id="post-a9aed62a-25e6-455a-a3b9-2e312664af42">
+
       <button class="entry__title" type="button" aria-expanded="false">
         Bazlab.pro  09.09.2026
       </button>
-      <div class="entry__body"><div class="entry__body-inner">
-        <p class="entry__text">В общем вывод есть у меня признаться если. Как бы чем дальше живешь, тем меньше уверенности, что человеку вообще свойственно чему то учиться. Уж слишком охотно называем свои падения мы опытом. Слово это удобное. Почти чуть чуть и даже благородное. Оно позволяет смотреть на собственные ошибки так, будто каждая из них непременно должна была сделать нас мудрее. Но жизнь устроена куда интереснее и жестче. К глубокому сожалению, не всякая ошибка учит. Некоторые ошибки просто отнимают. Сначала отнимают стыд. Потом осторожность. Потом способность различать, где ты еще оступился, а где уже сознательно выбрал дорогу вниз. Последнее вообще как отдельный искусства. Человек вообще удивительно быстро привыкает к собственной порче и деградации в целом. То, от чего когда то было тяжело уснуть, через время вспоминается почти без волнения. То, за что раньше было бы стыдно смотреть людям в глаза, совсем скоро становится всего лишь частью биографии которая с тобой присутствует уже всегда. Мы называем это взрослением, характером, обстоятельствами, усталостью и еще какой угодной чушью. Как угодно в принципе, лишь бы не произносить более неприятное слово. А оно , это слово ,есть «равнодушие». Наверное в этом и заключается настоящая опасность повторяющихся ошибок. Они не всегда ломают человека сразу. Они делают его хуже. Они приучают жить сломанным. Вот к примеру сначала ты теряешь что то хорошее и переживаешь. Потом теряешь это еще  раз и уже знаешь, как это пережить. Потом начинаешь заранее готовиться к потерям. А однажды замечаешь, что уже ничего особенно не бережешь.Ни людей. Ни слово. Ни себя. А ведь самое страшное, что никакой громкой трагедии в этот момент не происходит, абсолютно. Небо не рушится. Мир не останавливается. Человек просто однажды обнаруживает, что то лучшее, что когда то жило в ннм, больше не требует защиты да и не нужно оно ему в целом. Будто оно устало быть отвергнутым собственным хозяином. Как чистый пёс. А говорить то любим, что время лечит. Возможно, не отрицаю. Но оно так же прекрасно умеет притуплять. Притуплять совесть. Притуплять любовь. Притуплять страх потерять. Притуплять желание вернуться к себе прежнему. И в какой то момент уже не чувствуется, что вообще нужна другая жизнь. Вот это, и пожалуй, тяжелее любой ошибки.</p>
-      </div></div>
+
+      <div class="entry__body">
+        <div class="entry__body-inner">
+
+          <p class="entry__text">В общем вывод есть у меня признаться если. Как бы чем дальше живешь, тем меньше уверенности, что человеку вообще свойственно чему то учиться. Уж слишком охотно называем свои падения мы опытом. Слово это удобное. Почти чуть чуть и даже благородное. Оно позволяет смотреть на собственные ошибки так, будто каждая из них непременно должна была сделать нас мудрее. Но жизнь устроена куда интереснее и жестче. К глубокому сожалению, не всякая ошибка учит. Некоторые ошибки просто отнимают. Сначала отнимают стыд. Потом осторожность. Потом способность различать, где ты еще оступился, а где уже сознательно выбрал дорогу вниз. Последнее вообще как отдельный искусства. Человек вообще удивительно быстро привыкает к собственной порче и деградации в целом. То, от чего когда то было тяжело уснуть, через время вспоминается почти без волнения. То, за что раньше было бы стыдно смотреть людям в глаза, совсем скоро становится всего лишь частью биографии которая с тобой присутствует уже всегда. Мы называем это взрослением, характером, обстоятельствами, усталостью и еще какой угодной чушью. Как угодно в принципе, лишь бы не произносить более неприятное слово. А оно , это слово ,есть «равнодушие». Наверное в этом и заключается настоящая опасность повторяющихся ошибок. Они не всегда ломают человека сразу. Они делают его хуже. Они приучают жить сломанным. Вот к примеру сначала ты теряешь что то хорошее и переживаешь. Потом теряешь это еще  раз и уже знаешь, как это пережить. Потом начинаешь заранее готовиться к потерям. А однажды замечаешь, что уже ничего особенно не бережешь.Ни людей. Ни слово. Ни себя. А ведь самое страшное, что никакой громкой трагедии в этот момент не происходит, абсолютно. Небо не рушится. Мир не останавливается. Человек просто однажды обнаруживает, что то лучшее, что когда то жило в ннм, больше не требует защиты да и не нужно оно ему в целом. Будто оно устало быть отвергнутым собственным хозяином. Как чистый пёс. А говорить то любим, что время лечит. Возможно, не отрицаю. Но оно так же прекрасно умеет притуплять. Притуплять совесть. Притуплять любовь. Притуплять страх потерять. Притуплять желание вернуться к себе прежнему. И в какой то момент уже не чувствуется, что вообще нужна другая жизнь. Вот это, и пожалуй, тяжелее любой ошибки.</p>
+
+        </div>
+      </div>
+
     </article>
 
+
     <article class="entry is-collapsed" id="post-92995dc7-a26e-4275-a9a2-adc1a21116c3">
+
       <button class="entry__title" type="button" aria-expanded="false">
         4 декабря
       </button>
-      <div class="entry__body"><div class="entry__body-inner">
-        <p class="entry__text">Я не знаю как ты там.
+
+      <div class="entry__body">
+        <div class="entry__body-inner">
+
+          <p class="entry__text">Я не знаю как ты там.
 Тебе удобно и мягко? 
 Или облака изнутри
 Это железная сетка и строгий режим. 
@@ -244,57 +266,114 @@
 Или это ночь? 
 Ты ждёшь меня или не помнишь даже? 
 Куда идти чтобы в итоге встретиться?</p>
-      </div></div>
+
+        </div>
+      </div>
+
     </article>
 
   </main>
 
+
   <script>
+
     document.querySelectorAll('.entry__title').forEach((title) => {
+
       title.addEventListener('click', () => {
+
         const entry = title.closest('.entry');
+
         const collapsed = entry.classList.toggle('is-collapsed');
-        title.setAttribute('aria-expanded', String(!collapsed));
+
+        title.setAttribute(
+          'aria-expanded',
+          String(!collapsed)
+        );
+
       });
+
     });
 
+
     document.querySelectorAll('.entry__text').forEach((text) => {
+
       const collapse = () => {
+
         const entry = text.closest('.entry');
-        if (!entry || entry.classList.contains('is-collapsed')) return;
+
+        if (!entry || entry.classList.contains('is-collapsed')) {
+          return;
+        }
+
         entry.classList.add('is-collapsed');
+
         const title = entry.querySelector('.entry__title');
-        if (title) title.setAttribute('aria-expanded', 'false');
+
+        if (title) {
+          title.setAttribute('aria-expanded', 'false');
+        }
+
       };
+
 
       text.addEventListener('dblclick', collapse);
 
+
       let lastTouch = 0;
+
       text.addEventListener('touchend', (event) => {
+
         const now = Date.now();
+
         if (now - lastTouch < 350) {
+
           event.preventDefault();
+
           collapse();
+
           lastTouch = 0;
+
           return;
         }
+
         lastTouch = now;
-      }, { passive:false });
+
+      }, {
+        passive:false
+      });
+
     });
 
+
     const home = document.querySelector('[data-home]');
+
     if (home) {
+
       home.addEventListener('click', (event) => {
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        if (
+          window.matchMedia(
+            '(prefers-reduced-motion: reduce)'
+          ).matches
+        ) {
+          return;
+        }
 
         event.preventDefault();
+
         document.body.classList.add('is-leaving');
 
         window.setTimeout(() => {
+
           window.location.href = home.href;
+
         }, 650);
+
       });
+
     }
+
   </script>
+
 </body>
 </html>
