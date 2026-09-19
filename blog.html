@@ -47,7 +47,7 @@
         :root {
             --copper: #c2855b;
             --heading: #f3e9de;
-            --header-height: calc(env(safe-area-inset-top) + 120px);
+            --header-height: calc(env(safe-area-inset-top) + 77px);
             --text: #bd8c6e;
             --muted: #8d644d;
         }
@@ -261,7 +261,7 @@
                 "Times New Roman",
                 serif;
 
-            font-size: clamp(31px, 9vw, 45px);
+            font-size: clamp(26px, calc(100vw / 412 * 32), 39px);
             font-weight: 400;
             line-height: 1.14;
 
@@ -312,7 +312,7 @@
 
             font-family: Roboto, "Segoe UI", Arial, sans-serif;
             font-weight: 300;
-            font-size: clamp(25px, 7vw, 35px);
+            font-size: clamp(18px, calc(100vw / 412 * 22), 27px);
             line-height: 1.52;
 
             letter-spacing: 0.002em;
@@ -501,6 +501,19 @@
 
 
     <script>
+
+        // Keep the scroll clipping edge at the actual bottom of the home link.
+        const homeLink = document.querySelector(".brand__home");
+        const updateFeedBoundary = () => {
+            document.documentElement.style.setProperty(
+                "--header-height",
+                homeLink.getBoundingClientRect().bottom + "px"
+            );
+        };
+        updateFeedBoundary();
+        new ResizeObserver(updateFeedBoundary).observe(document.querySelector(".brand"));
+        window.addEventListener("resize", updateFeedBoundary);
+        document.fonts.ready.then(updateFeedBoundary);
 
         /*
          * Открытие / закрытие публикации
