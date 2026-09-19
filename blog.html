@@ -11,7 +11,6 @@
       --copper:#c2855b;
       --text:#bd8c6e;
       --muted:#8d644d;
-      --blog-bg:url("/180926.png");
     }
 
     *{
@@ -20,7 +19,7 @@
 
     html{
       min-height:100%;
-      background:#0d0806;
+      background:#0d0806 url("/180926.png") center top / cover no-repeat fixed;
     }
 
     body{
@@ -33,36 +32,6 @@
       background:transparent;
       opacity:0;
       animation:page-in 1.05s ease forwards;
-    }
-
-    /* Единственный фон страницы */
-    .velvet{
-      position:fixed;
-      inset:0;
-      z-index:0;
-      pointer-events:none;
-
-      background-image:var(--blog-bg);
-      background-repeat:no-repeat;
-      background-position:center top;
-      background-size:100vw auto;
-      background-color:transparent;
-    }
-
-    /*
-      Верхняя граница для текста.
-      Никакого собственного фона здесь больше нет,
-      поэтому 180926.png ничем не перекрывается.
-    */
-    .reading-shield{
-      position:fixed;
-      z-index:8;
-      top:0;
-      left:0;
-      width:100%;
-      height:calc(env(safe-area-inset-top) + 112px);
-      pointer-events:none;
-      background:transparent;
     }
 
     /* Неподвижная надпись */
@@ -217,8 +186,6 @@
 
 <body>
 
-  <div class="velvet" aria-hidden="true"></div>
-  <div class="reading-shield" aria-hidden="true"></div>
 
   <a class="brand" href="/" data-home aria-label="На главную">
     <span class="brand__name">ME AND.RU</span>
