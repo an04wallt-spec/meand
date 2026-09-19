@@ -59,6 +59,14 @@ body.leaving .transition-layer{opacity:1}body.leaving .home{opacity:0;filter:blu
 }
 @media(prefers-reduced-motion:reduce){.light-dust{display:none}.light-dust span{animation:none}}
 
+
+/* A soft local flare, without the browser's rectangular touch highlight. */
+.menu-item{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.menu-item.is-flashing{animation:none;opacity:1;text-shadow:0 0 6px #fff5dc,0 0 18px #ffd394,0 0 35px #edb76b}
+.string-flash{position:fixed;z-index:90;pointer-events:none;width:150px;height:260px;border-radius:50%;opacity:0;transform:translate(-50%,-50%);background:radial-gradient(ellipse at center,rgba(255,249,226,.85) 0%,rgba(255,221,166,.4) 14%,rgba(234,178,101,.16) 36%,rgba(234,178,101,0) 70%);mix-blend-mode:screen}
+.string-flash.is-active{animation:stringFlare .85s ease-out both}
+@keyframes stringFlare{0%{opacity:0;transform:translate(-50%,-50%) scale(.65)}25%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(1.25)}}
+@media(prefers-reduced-motion:reduce){.string-flash.is-active{animation:none;opacity:.35}.menu-item.is-flashing{text-shadow:0 0 8px #ffd394}}
 </style>
 <script type="application/ld+json">
 {
@@ -95,6 +103,7 @@ body.leaving .transition-layer{opacity:1}body.leaving .home{opacity:0;filter:blu
 </div>
 <section class="poem" id="poem" aria-label="Стихотворение"><div class="poem-text" id="poemText"></div><span class="poem-year" id="poemYear"></span></section>
 </main>
+<div class="string-flash" id="stringFlash" aria-hidden="true"></div>
 <div class="transition-layer" id="transitionLayer" aria-hidden="true"></div>
 <script>
 (()=>{
@@ -131,9 +140,42 @@ await sleep(10000);
 for(let lineIndex=0;lineIndex<currentPoem.lines.length;lineIndex++)await revealLine(currentPoem.lines[lineIndex],lineElements[lineIndex]);
 poemYear.classList.add("visible")}
 revealPoem();
-const links=document.querySelectorAll(".menu-item,.blog-hotspot");const transitionLayer=document.getElementById("transitionLayer");let transitionStarted=false;
-links.forEach(link=>{link.addEventListener("click",event=>{if(event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;event.preventDefault();if(transitionStarted)return;transitionStarted=true;const destination=link.href;const targetColor=link.dataset.color||"#ffffff";transitionLayer.style.backgroundColor=targetColor;requestAnimationFrame(()=>document.body.classList.add("leaving"));window.setTimeout(()=>{window.location.href=destination},2000)})});
-window.addEventListener("pageshow",()=>{transitionStarted=false;document.body.classList.remove("leaving");transitionLayer.style.backgroundColor=""});
+const links=document.querySelectorAll(".menu-item,.blog-hotspot");
+const transitionLayer=document.getElementById("transitionLayer");
+const stringFlash=document.getElementById("stringFlash");
+let transitionStarted=false;
+let navigationTimer;
+links.forEach(link=>link.addEventListener("click",event=>{
+    if(event.ctrlKey||event.metaKey||event.shiftKey||event.altKey||event.button!==0)return;
+    event.preventDefault();
+    if(transitionStarted)return;
+    transitionStarted=true;
+    const destination=link.href;
+    const stringLink=link.classList.contains("menu-item");
+    const motionReduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if(stringLink){
+        const bounds=link.getBoundingClientRect();
+        stringFlash.style.left=(bounds.left+bounds.width/2)+"px";
+        stringFlash.style.top=(bounds.top+bounds.height/2)+"px";
+        stringFlash.style.height=Math.max(220,bounds.height+100)+"px";
+        link.classList.add("is-flashing");
+        stringFlash.classList.add("is-active");
+    }else{
+        transitionLayer.style.backgroundColor=link.dataset.color||"#160d0a";
+        document.body.classList.add("leaving");
+    }
+    navigationTimer=window.setTimeout(()=>{
+        window.location.href=destination;
+    },motionReduced?150:(stringLink?850:2000));
+}));
+window.addEventListener("pageshow",()=>{
+    window.clearTimeout(navigationTimer);
+    transitionStarted=false;
+    document.body.classList.remove("leaving");
+    transitionLayer.style.backgroundColor="";
+    stringFlash.classList.remove("is-active");
+    links.forEach(link=>link.classList.remove("is-flashing"));
+});
 })();
 </script>
 
