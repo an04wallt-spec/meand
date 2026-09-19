@@ -136,7 +136,7 @@ const phrasePauses={
 async function revealLine(lineText,lineData){let visibleText="";for(let index=0;index<lineData.chars.length;index++){const span=lineData.chars[index];const character=span.textContent;span.classList.add("visible");visibleText+=character;if(lineText==="....."){await sleep(1000);continue}await sleep(characterDelay(character));if(phrasePauses[visibleText]!==undefined)await sleep(phrasePauses[visibleText])}}
 async function revealPoem(){
 if(reducedMotion){lineElements.forEach(item=>item.chars.forEach(span=>span.classList.add("visible")));poemYear.classList.add("visible");return}
-await sleep(10000);
+await sleep(7000);
 for(let lineIndex=0;lineIndex<currentPoem.lines.length;lineIndex++)await revealLine(currentPoem.lines[lineIndex],lineElements[lineIndex]);
 poemYear.classList.add("visible")}
 revealPoem();
