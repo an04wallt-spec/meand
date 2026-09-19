@@ -152,25 +152,53 @@ links.forEach(link=>link.addEventListener("click",event=>{
     event.preventDefault();
     if(transitionStarted)return;
     transitionStarted=true;
+
     const destination=link.href;
     const stringLink=link.classList.contains("menu-item");
     const motionReduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const targetColor=link.dataset.color||"#ffffff";
+    const minimumSoundTime=motionReduced?150:1800;
+    const transitionTime=motionReduced?150:2000;
+    let transitionBegun=false;
+
+    const beginTransition=()=>{
+        if(transitionBegun)return;
+        transitionBegun=true;
+        transitionLayer.style.backgroundColor=targetColor;
+        requestAnimationFrame(()=>document.body.classList.add("leaving"));
+        navigationTimer=window.setTimeout(()=>{
+            window.location.href=destination;
+        },transitionTime);
+    };
+
     if(stringLink){
-        const audio=stringAudio.get(link);
-        if(audio){audio.currentTime=0;const playPromise=audio.play();if(playPromise&&typeof playPromise.catch==="function")playPromise.catch(()=>{})}
         const bounds=link.getBoundingClientRect();
         stringFlash.style.left=(bounds.left+bounds.width/2)+"px";
         stringFlash.style.top=(bounds.top+bounds.height/2)+"px";
         stringFlash.style.height=Math.max(220,bounds.height+100)+"px";
         link.classList.add("is-flashing");
         stringFlash.classList.add("is-active");
+
+        const audio=stringAudio.get(link);
+        const soundStartedAt=performance.now();
+        const waitForMinimumThenTransition=()=>{
+            const elapsed=performance.now()-soundStartedAt;
+            window.setTimeout(beginTransition,Math.max(0,minimumSoundTime-elapsed));
+        };
+
+        if(audio){
+            audio.currentTime=0;
+            audio.addEventListener("ended",waitForMinimumThenTransition,{once:true});
+            const playPromise=audio.play();
+            if(playPromise&&typeof playPromise.catch==="function"){
+                playPromise.catch(waitForMinimumThenTransition);
+            }
+        }else{
+            window.setTimeout(beginTransition,minimumSoundTime);
+        }
     }else{
-        transitionLayer.style.backgroundColor=link.dataset.color||"#160d0a";
-        document.body.classList.add("leaving");
+        beginTransition();
     }
-    navigationTimer=window.setTimeout(()=>{
-        window.location.href=destination;
-    },motionReduced?150:(stringLink?850:2000));
 }));
 window.addEventListener("pageshow",()=>{
     window.clearTimeout(navigationTimer);
