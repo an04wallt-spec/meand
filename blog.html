@@ -1,368 +1,343 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 
 <head>
-  <meta charset="utf-8">
+    <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
-  >
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
 
-  <meta name="theme-color" content="#160d0a">
+    <title>Мысли — MeAND.ru</title>
 
-  <title>Мысли — meand.ru</title>
+    <style>
+        :root {
+            --copper: #c2855b;
+            --text: #bd8c6e;
+            --muted: #8d644d;
+        }
 
-  <style>
+        * {
+            box-sizing: border-box;
+        }
 
-    :root {
-      --copper: #c2855b;
-      --text: #bd8c6e;
-      --muted: #8d644d;
-    }
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+        }
 
-    * {
-      box-sizing: border-box;
-    }
+        html {
+            min-height: 100%;
+        }
 
-    html {
-      margin: 0;
-      padding: 0;
-      min-height: 100%;
-    }
+        body {
+            min-height: 100vh;
 
-    body {
-      margin: 0;
-      padding: 0;
+            background-image: url("180926.png");
+            background-repeat: no-repeat;
+            background-position: center top;
+            background-size: cover;
+            background-attachment: fixed;
 
-      min-height: 100vh;
-      min-height: 100dvh;
+            color: var(--text);
 
-      overflow-x: hidden;
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
 
-      background-image: url("/180926.png");
-      background-position: center top;
-      background-repeat: no-repeat;
-      background-size: cover;
+            overflow-x: hidden;
 
-      color: var(--text);
+            -webkit-font-smoothing: antialiased;
+        }
 
-      font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
 
-      -webkit-font-smoothing: antialiased;
+        /* ========================================
+           ME AND.RU
+           ======================================== */
 
-      opacity: 0;
-      animation: page-in 1.05s ease forwards;
-    }
+        .brand {
+            position: fixed;
 
+            top: calc(env(safe-area-inset-top) + 24px);
+            left: clamp(20px, 6vw, 42px);
 
-    /* =========================
-       ME AND.RU
-       ========================= */
+            z-index: 100;
 
-    .brand {
-      position: fixed;
-      z-index: 10;
+            display: block;
 
-      top: calc(env(safe-area-inset-top) + 24px);
-      left: clamp(20px, 6vw, 42px);
+            text-decoration: none;
 
-      display: block;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-      text-decoration: none;
-      user-select: none;
+        .brand__name {
+            display: block;
 
-      -webkit-tap-highlight-color: transparent;
-    }
+            margin: 0;
 
-    .brand__name {
-      display: block;
+            color: var(--copper);
 
-      color: var(--copper);
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
 
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+            font-size: clamp(25px, 7.5vw, 36px);
+            font-weight: 500;
+            line-height: 1;
 
-      font-size: clamp(25px, 7.5vw, 36px);
-      font-weight: 500;
-      line-height: 1;
+            letter-spacing: 0.11em;
 
-      letter-spacing: .11em;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
 
-    .brand__home {
-      display: inline-block;
+        .brand__home {
+            display: block;
 
-      margin-top: 10px;
+            margin-top: 10px;
 
-      color: var(--muted);
+            color: var(--muted);
 
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
 
-      font-size: 13px;
-      line-height: 1;
+            font-size: 13px;
+            line-height: 1;
 
-      letter-spacing: .12em;
-      text-decoration: none;
-      text-transform: lowercase;
+            letter-spacing: 0.12em;
 
-      -webkit-tap-highlight-color: transparent;
-    }
+            text-transform: lowercase;
+        }
 
 
-    /* =========================
-       ПУБЛИКАЦИИ
-       ========================= */
+        /* ========================================
+           ПУБЛИКАЦИИ
+           ======================================== */
 
-    .feed {
-      position: relative;
-      z-index: 1;
+        .feed {
+            width: min(90vw, 760px);
 
-      width: min(90vw, 760px);
+            margin: 0 auto;
 
-      margin: 0 auto;
+            padding-top:
+                calc(env(safe-area-inset-top) + 145px);
 
-      padding:
-        calc(env(safe-area-inset-top) + 145px)
-        0
-        calc(env(safe-area-inset-bottom) + 18vh);
-    }
+            padding-bottom:
+                calc(env(safe-area-inset-bottom) + 18vh);
+        }
 
-    .entry {
-      margin: 0 0 70px;
-      padding: 0;
-    }
+        .entry {
+            margin: 0 0 70px 0;
+            padding: 0;
+        }
 
-    .entry__title {
-      display: block;
+        .entry__title {
+            display: block;
 
-      width: 100%;
+            width: 100%;
 
-      margin: 0;
-      padding: 0;
+            margin: 0;
+            padding: 0;
 
-      border: 0;
-      background: none;
+            border: 0;
+            outline: 0;
 
-      color: var(--copper);
+            background: transparent;
 
-      font:
-        400
-        clamp(31px, 9vw, 45px) / 1.14
-        Georgia,
-        "Times New Roman",
-        serif;
+            color: var(--copper);
 
-      text-align: left;
-      letter-spacing: .003em;
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
 
-      cursor: pointer;
+            font-size: clamp(31px, 9vw, 45px);
+            font-weight: 400;
+            line-height: 1.14;
 
-      -webkit-tap-highlight-color: transparent;
-    }
+            text-align: left;
 
-    .entry__body {
-      display: grid;
+            letter-spacing: 0.003em;
 
-      grid-template-rows: 1fr;
+            cursor: pointer;
 
-      margin-top: 22px;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-      opacity: 1;
+        .entry__body {
+            display: grid;
 
-      transition:
-        grid-template-rows .42s ease,
-        opacity .32s ease,
-        margin-top .42s ease;
-    }
+            grid-template-rows: 1fr;
 
-    .entry__body-inner {
-      min-height: 0;
-      overflow: hidden;
-    }
+            margin-top: 22px;
 
-    .entry__text {
-      margin: 0;
+            opacity: 1;
 
-      color: var(--text);
+            transition:
+                grid-template-rows 0.42s ease,
+                opacity 0.32s ease,
+                margin-top 0.42s ease;
+        }
 
-      font-size: clamp(25px, 7vw, 35px);
-      line-height: 1.52;
+        .entry__body-inner {
+            min-height: 0;
+            overflow: hidden;
+        }
 
-      letter-spacing: .002em;
+        .entry__text {
+            margin: 0;
+            padding: 0;
 
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
-    }
+            color: var(--text);
 
-    .entry.is-collapsed .entry__body {
-      grid-template-rows: 0fr;
+            font-size: clamp(25px, 7vw, 35px);
+            line-height: 1.52;
 
-      margin-top: 0;
+            letter-spacing: 0.002em;
 
-      opacity: 0;
-    }
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
 
+        .entry.is-collapsed .entry__body {
+            grid-template-rows: 0fr;
 
-    /* =========================
-       АНИМАЦИЯ
-       ========================= */
+            margin-top: 0;
 
-    @keyframes page-in {
+            opacity: 0;
+        }
 
-      from {
-        opacity: 0;
-      }
 
-      to {
-        opacity: 1;
-      }
+        /* ========================================
+           БОЛЬШОЙ ЭКРАН
+           ======================================== */
 
-    }
+        @media (min-width: 800px) {
 
-    body.is-leaving {
-      animation: none;
+            .feed {
+                width: min(72vw, 760px);
 
-      opacity: 0;
+                padding-top: 165px;
+            }
 
-      transition: opacity .65s ease;
-    }
+            .entry {
+                margin-bottom: 88px;
+            }
 
+            .entry__title {
+                font-size: 42px;
+            }
 
-    /* =========================
-       БОЛЬШОЙ ЭКРАН
-       ========================= */
+            .entry__text {
+                font-size: 30px;
+            }
+        }
 
-    @media (min-width: 800px) {
 
-      .feed {
-        width: min(72vw, 760px);
-        padding-top: 165px;
-      }
+        /* ========================================
+           МОБИЛЬНЫЕ БРАУЗЕРЫ
+           ======================================== */
 
-      .entry {
-        margin-bottom: 88px;
-      }
+        @media (max-width: 799px) {
 
-      .entry__title {
-        font-size: 42px;
-      }
+            body {
+                background-attachment: scroll;
+            }
+        }
 
-      .entry__text {
-        font-size: 30px;
-      }
 
-    }
+        /* ========================================
+           БЕЗ АНИМАЦИИ
+           ======================================== */
 
+        @media (prefers-reduced-motion: reduce) {
 
-    /* =========================
-       REDUCED MOTION
-       ========================= */
+            .entry__body {
+                transition: none;
+            }
+        }
 
-    @media (prefers-reduced-motion: reduce) {
-
-      body {
-        animation: none;
-        opacity: 1;
-      }
-
-      .entry__body,
-      body.is-leaving {
-        transition: none;
-      }
-
-    }
-
-  </style>
+    </style>
 </head>
 
 
 <body>
 
 
-  <a
-    class="brand"
-    href="/"
-    data-home
-    aria-label="На главную"
-  >
-
-    <span class="brand__name">
-      ME AND.RU
-    </span>
-
-    <span class="brand__home">
-      на главную
-    </span>
-
-  </a>
+    <a
+        class="brand"
+        href="/"
+        aria-label="На главную"
+    >
+        <span class="brand__name">ME AND.RU</span>
+        <span class="brand__home">на главную</span>
+    </a>
 
 
-  <main
-    class="feed"
-    aria-label="Мысли и заметки"
-  >
-
-
-    <!-- BLOG_POSTS_START -->
-
-
-    <article
-      class="entry is-collapsed"
-      id="post-a9aed62a-25e6-455a-a3b9-2e312664af42"
+    <main
+        class="feed"
+        aria-label="Мысли и заметки"
     >
 
-      <button
-        class="entry__title"
-        type="button"
-        aria-expanded="false"
-      >
-        Bazlab.pro 09.09.2026
-      </button>
+
+        <!-- BLOG_POSTS_START -->
 
 
-      <div class="entry__body">
+        <article
+            class="entry is-collapsed"
+            id="post-a9aed62a-25e6-455a-a3b9-2e312664af42"
+        >
 
-        <div class="entry__body-inner">
-
-          <p class="entry__text">В общем вывод есть у меня признаться если. Как бы чем дальше живешь, тем меньше уверенности, что человеку вообще свойственно чему то учиться. Уж слишком охотно называем свои падения мы опытом. Слово это удобное. Почти чуть чуть и даже благородное. Оно позволяет смотреть на собственные ошибки так, будто каждая из них непременно должна была сделать нас мудрее. Но жизнь устроена куда интереснее и жестче. К глубокому сожалению, не всякая ошибка учит. Некоторые ошибки просто отнимают. Сначала отнимают стыд. Потом осторожность. Потом способность различать, где ты еще оступился, а где уже сознательно выбрал дорогу вниз. Последнее вообще как отдельный искусства. Человек вообще удивительно быстро привыкает к собственной порче и деградации в целом. То, от чего когда то было тяжело уснуть, через время вспоминается почти без волнения. То, за что раньше было бы стыдно смотреть людям в глаза, совсем скоро становится всего лишь частью биографии которая с тобой присутствует уже всегда. Мы называем это взрослением, характером, обстоятельствами, усталостью и еще какой угодной чушью. Как угодно в принципе, лишь бы не произносить более неприятное слово. А оно , это слово ,есть «равнодушие». Наверное в этом и заключается настоящая опасность повторяющихся ошибок. Они не всегда ломают человека сразу. Они делают его хуже. Они приучают жить сломанным. Вот к примеру сначала ты теряешь что то хорошее и переживаешь. Потом теряешь это еще  раз и уже знаешь, как это пережить. Потом начинаешь заранее готовиться к потерям. А однажды замечаешь, что уже ничего особенно не бережешь.Ни людей. Ни слово. Ни себя. А ведь самое страшное, что никакой громкой трагедии в этот момент не происходит, абсолютно. Небо не рушится. Мир не останавливается. Человек просто однажды обнаруживает, что то лучшее, что когда то жило в ннм, больше не требует защиты да и не нужно оно ему в целом. Будто оно устало быть отвергнутым собственным хозяином. Как чистый пёс. А говорить то любим, что время лечит. Возможно, не отрицаю. Но оно так же прекрасно умеет притуплять. Притуплять совесть. Притуплять любовь. Притуплять страх потерять. Притуплять желание вернуться к себе прежнему. И в какой то момент уже не чувствуется, что вообще нужна другая жизнь. Вот это, и пожалуй, тяжелее любой ошибки.</p>
-
-        </div>
-
-      </div>
-
-    </article>
-
-
-    <article
-      class="entry is-collapsed"
-      id="post-92995dc7-a26e-4275-a9a2-adc1a21116c3"
-    >
-
-      <button
-        class="entry__title"
-        type="button"
-        aria-expanded="false"
-      >
-        4 декабря
-      </button>
+            <button
+                class="entry__title"
+                type="button"
+                aria-expanded="false"
+            >
+                Bazlab.pro 09.09.2026
+            </button>
 
 
-      <div class="entry__body">
+            <div class="entry__body">
 
-        <div class="entry__body-inner">
+                <div class="entry__body-inner">
 
-          <p class="entry__text">Я не знаю как ты там.
+                    <p class="entry__text">В общем вывод есть у меня признаться если. Как бы чем дальше живешь, тем меньше уверенности, что человеку вообще свойственно чему то учиться. Уж слишком охотно называем свои падения мы опытом. Слово это удобное. Почти чуть чуть и даже благородное. Оно позволяет смотреть на собственные ошибки так, будто каждая из них непременно должна была сделать нас мудрее. Но жизнь устроена куда интереснее и жестче. К глубокому сожалению, не всякая ошибка учит. Некоторые ошибки просто отнимают. Сначала отнимают стыд. Потом осторожность. Потом способность различать, где ты еще оступился, а где уже сознательно выбрал дорогу вниз. Последнее вообще как отдельный искусства. Человек вообще удивительно быстро привыкает к собственной порче и деградации в целом. То, от чего когда то было тяжело уснуть, через время вспоминается почти без волнения. То, за что раньше было бы стыдно смотреть людям в глаза, совсем скоро становится всего лишь частью биографии которая с тобой присутствует уже всегда. Мы называем это взрослением, характером, обстоятельствами, усталостью и еще какой угодной чушью. Как угодно в принципе, лишь бы не произносить более неприятное слово. А оно , это слово ,есть «равнодушие». Наверное в этом и заключается настоящая опасность повторяющихся ошибок. Они не всегда ломают человека сразу. Они делают его хуже. Они приучают жить сломанным. Вот к примеру сначала ты теряешь что то хорошее и переживаешь. Потом теряешь это еще  раз и уже знаешь, как это пережить. Потом начинаешь заранее готовиться к потерям. А однажды замечаешь, что уже ничего особенно не бережешь.Ни людей. Ни слово. Ни себя. А ведь самое страшное, что никакой громкой трагедии в этот момент не происходит, абсолютно. Небо не рушится. Мир не останавливается. Человек просто однажды обнаруживает, что то лучшее, что когда то жило в ннм, больше не требует защиты да и не нужно оно ему в целом. Будто оно устало быть отвергнутым собственным хозяином. Как чистый пёс. А говорить то любим, что время лечит. Возможно, не отрицаю. Но оно так же прекрасно умеет притуплять. Притуплять совесть. Притуплять любовь. Притуплять страх потерять. Притуплять желание вернуться к себе прежнему. И в какой то момент уже не чувствуется, что вообще нужна другая жизнь. Вот это, и пожалуй, тяжелее любой ошибки.</p>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <article
+            class="entry is-collapsed"
+            id="post-92995dc7-a26e-4275-a9a2-adc1a21116c3"
+        >
+
+            <button
+                class="entry__title"
+                type="button"
+                aria-expanded="false"
+            >
+                4 декабря
+            </button>
+
+
+            <div class="entry__body">
+
+                <div class="entry__body-inner">
+
+                    <p class="entry__text">Я не знаю как ты там.
 Тебе удобно и мягко?
 Или облака изнутри
 Это железная сетка и строгий режим.
@@ -373,186 +348,137 @@
 Ты ждёшь меня или не помнишь даже?
 Куда идти чтобы в итоге встретиться?</p>
 
-        </div>
+                </div>
 
-      </div>
+            </div>
 
-    </article>
-
-
-  </main>
+        </article>
 
 
-  <script>
-
-    /*
-     * Открытие и закрытие публикации
-     * по нажатию на заголовок.
-     */
-
-    document
-      .querySelectorAll('.entry__title')
-      .forEach((title) => {
-
-        title.addEventListener('click', () => {
-
-          const entry =
-            title.closest('.entry');
-
-          if (!entry) {
-            return;
-          }
-
-          const collapsed =
-            entry.classList.toggle(
-              'is-collapsed'
-            );
-
-          title.setAttribute(
-            'aria-expanded',
-            String(!collapsed)
-          );
-
-        });
-
-      });
+    </main>
 
 
-    /*
-     * Двойной клик по тексту
-     * сворачивает публикацию.
-     *
-     * На мобильном —
-     * двойное касание.
-     */
+    <script>
 
-    document
-      .querySelectorAll('.entry__text')
-      .forEach((text) => {
+        /*
+         * Открытие и закрытие публикации
+         * нажатием на заголовок.
+         */
 
-        const collapse = () => {
+        document
+            .querySelectorAll(".entry__title")
+            .forEach((title) => {
 
-          const entry =
-            text.closest('.entry');
+                title.addEventListener("click", () => {
 
-          if (
-            !entry ||
-            entry.classList.contains(
-              'is-collapsed'
-            )
-          ) {
-            return;
-          }
+                    const entry =
+                        title.closest(".entry");
 
-          entry.classList.add(
-            'is-collapsed'
-          );
+                    if (!entry) {
+                        return;
+                    }
 
-          const title =
-            entry.querySelector(
-              '.entry__title'
-            );
+                    const collapsed =
+                        entry.classList.toggle(
+                            "is-collapsed"
+                        );
 
-          if (title) {
+                    title.setAttribute(
+                        "aria-expanded",
+                        String(!collapsed)
+                    );
 
-            title.setAttribute(
-              'aria-expanded',
-              'false'
-            );
+                });
 
-          }
-
-        };
+            });
 
 
-        text.addEventListener(
-          'dblclick',
-          collapse
-        );
+        /*
+         * Двойной клик по тексту
+         * сворачивает публикацию.
+         *
+         * На мобильном —
+         * двойное касание.
+         */
+
+        document
+            .querySelectorAll(".entry__text")
+            .forEach((text) => {
+
+                const collapse = () => {
+
+                    const entry =
+                        text.closest(".entry");
+
+                    if (
+                        !entry ||
+                        entry.classList.contains(
+                            "is-collapsed"
+                        )
+                    ) {
+                        return;
+                    }
+
+                    entry.classList.add(
+                        "is-collapsed"
+                    );
+
+                    const title =
+                        entry.querySelector(
+                            ".entry__title"
+                        );
+
+                    if (title) {
+
+                        title.setAttribute(
+                            "aria-expanded",
+                            "false"
+                        );
+
+                    }
+
+                };
 
 
-        let lastTouch = 0;
+                text.addEventListener(
+                    "dblclick",
+                    collapse
+                );
 
 
-        text.addEventListener(
-          'touchend',
-          (event) => {
-
-            const now =
-              Date.now();
-
-            if (
-              now - lastTouch < 350
-            ) {
-
-              event.preventDefault();
-
-              collapse();
-
-              lastTouch = 0;
-
-              return;
-
-            }
-
-            lastTouch = now;
-
-          },
-          {
-            passive: false
-          }
-        );
-
-      });
+                let lastTouch = 0;
 
 
-    /*
-     * Возврат на главную.
-     */
+                text.addEventListener(
+                    "touchend",
+                    (event) => {
 
-    const home =
-      document.querySelector(
-        '[data-home]'
-      );
+                        const now = Date.now();
 
+                        if (
+                            now - lastTouch < 350
+                        ) {
 
-    if (home) {
+                            event.preventDefault();
 
-      home.addEventListener(
-        'click',
-        (event) => {
+                            collapse();
 
-          if (
-            window.matchMedia(
-              '(prefers-reduced-motion: reduce)'
-            ).matches
-          ) {
-            return;
-          }
+                            lastTouch = 0;
 
-          event.preventDefault();
+                            return;
+                        }
 
-          document.body.classList.add(
-            'is-leaving'
-          );
+                        lastTouch = now;
 
+                    },
+                    {
+                        passive: false
+                    }
+                );
 
-          window.setTimeout(
-            () => {
+            });
 
-              window.location.href =
-                home.href;
-
-            },
-            650
-          );
-
-        }
-      );
-
-    }
-
-  </script>
+    </script>
 
 
 </body>
