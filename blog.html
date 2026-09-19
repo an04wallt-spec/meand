@@ -65,6 +65,7 @@
             height: 100%;
 
             overflow: hidden;
+            background-color: #160d0a;
         }
 
 
@@ -86,10 +87,7 @@
             height: 100%;
             height: 100dvh;
 
-            background-image: url("180926.png");
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-size: cover;
+            isolation: isolate;
 
             color: var(--text);
 
@@ -109,6 +107,22 @@
          *
          * Надпись также неподвижна.
          */
+
+        /* Отдельное изображение не зависит от переноса фона body на canvas. */
+        .page-background {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            display: block;
+            width: 100%;
+            height: 100%;
+            height: 100dvh;
+            object-fit: cover;
+            object-position: center;
+            pointer-events: none;
+            user-select: none;
+        }
+
 
         .brand {
             position: fixed;
@@ -180,6 +194,7 @@
 
         .feed {
             position: absolute;
+            z-index: 1;
 
             top: 0;
             left: 0;
@@ -336,6 +351,15 @@
 
 
 <body>
+
+    <img
+        class="page-background"
+        src="/180926.png?v=ac4b40eb"
+        alt=""
+        aria-hidden="true"
+        fetchpriority="high"
+        draggable="false"
+    >
 
 
     <!--
