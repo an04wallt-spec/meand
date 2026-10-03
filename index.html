@@ -166,12 +166,11 @@ const poemTimeline=[
     {time:31.94,line:8,end:28}
 ];
 
-const poemAudio=new Audio("vremya-stiraet-vse.mp3");
+const poemAudio=new Audio("vremya-stiraet-vse.mp3?v=20261003-2");
 poemAudio.preload="auto";
-poemAudio.load();
+poemAudio.playsInline=true;
 
 let poemStarted=false;
-let poemStarting=false;
 let timelineIndex=0;
 let poemRaf=0;
 
@@ -187,7 +186,9 @@ function syncPoemToAudio(){
         revealTo(cue.line,cue.end);
     }
     if(now>=33.90)poemYear.classList.add("visible");
-    if(!poemAudio.paused&&!poemAudio.ended)poemRaf=requestAnimationFrame(syncPoemToAudio);
+    if(!poemAudio.paused&&!poemAudio.ended){
+        poemRaf=requestAnimationFrame(syncPoemToAudio);
+    }
 }
 
 function resetPoemSync(){
@@ -197,74 +198,48 @@ function resetPoemSync(){
     poemYear.classList.remove("visible");
 }
 
-function removeStartListeners(){
-    document.removeEventListener("pointerdown",firstInteraction,true);
-    document.removeEventListener("touchstart",firstInteraction,true);
-    document.removeEventListener("click",firstInteraction,true);
-    document.removeEventListener("keydown",firstInteraction,true);
-}
-
 function startPoemAudio(){
-    if(poemStarted||poemStarting)return Promise.resolve(poemStarted);
-    poemStarting=true;
+    if(poemStarted)return;
     resetPoemSync();
     poemAudio.currentTime=0;
 
-    const playPromise=poemAudio.play();
-
-    if(playPromise&&typeof playPromise.then==="function"){
-        return playPromise.then(()=>{
-            poemStarting=false;
+    const p=poemAudio.play();
+    if(p&&typeof p.then==="function"){
+        p.then(()=>{
             poemStarted=true;
-            removeStartListeners();
             cancelAnimationFrame(poemRaf);
             poemRaf=requestAnimationFrame(syncPoemToAudio);
-            return true;
-        }).catch(()=>{
-            poemStarting=false;
-            poemStarted=false;
-            return false;
-        });
+            removePoemStartListeners();
+        }).catch(()=>{});
+    }else{
+        poemStarted=true;
+        poemRaf=requestAnimationFrame(syncPoemToAudio);
+        removePoemStartListeners();
     }
-
-    poemStarting=false;
-    poemStarted=true;
-    removeStartListeners();
-    poemRaf=requestAnimationFrame(syncPoemToAudio);
-    return Promise.resolve(true);
 }
 
-poemAudio.addEventListener("play",()=>{
-    if(!poemStarted)return;
-    cancelAnimationFrame(poemRaf);
-    poemRaf=requestAnimationFrame(syncPoemToAudio);
-});
+function poemStartGesture(){
+    startPoemAudio();
+}
 
-poemAudio.addEventListener("seeked",()=>{
-    if(!poemStarted)return;
-    timelineIndex=0;
-    lineElements.forEach(item=>item.chars.forEach(span=>span.classList.remove("visible")));
-    poemYear.classList.remove("visible");
-    syncPoemToAudio();
-});
+function removePoemStartListeners(){
+    window.removeEventListener("pointerup",poemStartGesture,true);
+    window.removeEventListener("touchend",poemStartGesture,true);
+    window.removeEventListener("click",poemStartGesture,true);
+    window.removeEventListener("keydown",poemStartGesture,true);
+}
+
+window.addEventListener("pointerup",poemStartGesture,true);
+window.addEventListener("touchend",poemStartGesture,true);
+window.addEventListener("click",poemStartGesture,true);
+window.addEventListener("keydown",poemStartGesture,true);
 
 poemAudio.addEventListener("error",()=>{
     lineElements.forEach(item=>item.chars.forEach(span=>span.classList.add("visible")));
     poemYear.classList.add("visible");
 });
 
-/* На мобильных браузерах запись запускается прямо из первого пользовательского жеста. */
-function firstInteraction(){
-    startPoemAudio();
-}
-
-document.addEventListener("pointerdown",firstInteraction,true);
-document.addEventListener("touchstart",firstInteraction,true);
-document.addEventListener("click",firstInteraction,true);
-document.addEventListener("keydown",firstInteraction,true);
-
-/* На браузерах, где автозвук разрешён, пробуем стартовать сразу.
-   При отказе обработчики остаются и повторят запуск на первом касании. */
+/* Пробуем автозапуск; если браузер его блокирует, первое действие пользователя запускает запись. */
 startPoemAudio();
 
 const links=document.querySelectorAll(".menu-item,.blog-hotspot");
