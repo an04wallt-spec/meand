@@ -219,6 +219,10 @@ poemAudio.addEventListener("seeked",()=>{
     poemYear.classList.remove("visible");
     syncPoemToAudio();
 });
+poemAudio.addEventListener("error",()=>{
+    lineElements.forEach(item=>item.chars.forEach(span=>span.classList.add("visible")));
+    poemYear.classList.add("visible");
+});
 
 /* На браузерах, где автозвук запрещён, первое действие пользователя запускает запись. */
 const firstInteraction=()=>{
