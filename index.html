@@ -168,7 +168,10 @@ const poemTimeline=[
 
 const poemAudio=new Audio("vremya-stiraet-vse.mp3");
 poemAudio.preload="auto";
+poemAudio.load();
+
 let poemStarted=false;
+let poemStarting=false;
 let timelineIndex=0;
 let poemRaf=0;
 
@@ -194,48 +197,74 @@ function resetPoemSync(){
     poemYear.classList.remove("visible");
 }
 
+function removeStartListeners(){
+    document.removeEventListener("pointerdown",firstInteraction,true);
+    document.removeEventListener("touchstart",firstInteraction,true);
+    document.removeEventListener("click",firstInteraction,true);
+    document.removeEventListener("keydown",firstInteraction,true);
+}
+
 function startPoemAudio(){
-    if(poemStarted)return;
-    poemStarted=true;
+    if(poemStarted||poemStarting)return Promise.resolve(poemStarted);
+    poemStarting=true;
     resetPoemSync();
     poemAudio.currentTime=0;
+
     const playPromise=poemAudio.play();
+
     if(playPromise&&typeof playPromise.then==="function"){
-        playPromise.then(()=>{poemRaf=requestAnimationFrame(syncPoemToAudio)}).catch(()=>{
+        return playPromise.then(()=>{
+            poemStarting=false;
+            poemStarted=true;
+            removeStartListeners();
+            cancelAnimationFrame(poemRaf);
+            poemRaf=requestAnimationFrame(syncPoemToAudio);
+            return true;
+        }).catch(()=>{
+            poemStarting=false;
             poemStarted=false;
+            return false;
         });
-    }else{
-        poemRaf=requestAnimationFrame(syncPoemToAudio);
     }
+
+    poemStarting=false;
+    poemStarted=true;
+    removeStartListeners();
+    poemRaf=requestAnimationFrame(syncPoemToAudio);
+    return Promise.resolve(true);
 }
 
 poemAudio.addEventListener("play",()=>{
+    if(!poemStarted)return;
     cancelAnimationFrame(poemRaf);
     poemRaf=requestAnimationFrame(syncPoemToAudio);
 });
+
 poemAudio.addEventListener("seeked",()=>{
+    if(!poemStarted)return;
     timelineIndex=0;
     lineElements.forEach(item=>item.chars.forEach(span=>span.classList.remove("visible")));
     poemYear.classList.remove("visible");
     syncPoemToAudio();
 });
+
 poemAudio.addEventListener("error",()=>{
     lineElements.forEach(item=>item.chars.forEach(span=>span.classList.add("visible")));
     poemYear.classList.add("visible");
 });
 
-/* На браузерах, где автозвук запрещён, первое действие пользователя запускает запись. */
-const firstInteraction=()=>{
+/* На мобильных браузерах запись запускается прямо из первого пользовательского жеста. */
+function firstInteraction(){
     startPoemAudio();
-    if(poemStarted){
-        document.removeEventListener("pointerdown",firstInteraction,true);
-        document.removeEventListener("keydown",firstInteraction,true);
-    }
-};
+}
+
 document.addEventListener("pointerdown",firstInteraction,true);
+document.addEventListener("touchstart",firstInteraction,true);
+document.addEventListener("click",firstInteraction,true);
 document.addEventListener("keydown",firstInteraction,true);
 
-/* На настольных браузерах пробуем стартовать сразу; при блокировке ждём первого касания/клика. */
+/* На браузерах, где автозвук разрешён, пробуем стартовать сразу.
+   При отказе обработчики остаются и повторят запуск на первом касании. */
 startPoemAudio();
 
 const links=document.querySelectorAll(".menu-item,.blog-hotspot");
