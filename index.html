@@ -102,6 +102,9 @@ body.leaving .transition-layer{opacity:1}body.leaving .home{opacity:0;filter:blu
 <a class="blog-hotspot" href="blog.html" data-color="#160d0a" aria-label="Мысли"></a>
 </div>
 <section class="poem" id="poem" aria-label="Стихотворение"><div class="poem-text" id="poemText"></div><span class="poem-year" id="poemYear"></span></section>
+<audio id="poemAudio" preload="auto" playsinline>
+  <source src="vremya-stiraet-vse.mp3?v=20261004-1" type="audio/mpeg">
+</audio>
 </main>
 <div class="string-flash" id="stringFlash" aria-hidden="true"></div>
 <div class="transition-layer" id="transitionLayer" aria-hidden="true"></div>
@@ -166,21 +169,24 @@ const poemTimeline=[
     {time:31.94,line:8,end:28}
 ];
 
-const poemAudio=new Audio("vremya-stiraet-vse.mp3?v=20261003-2");
-poemAudio.preload="auto";
-poemAudio.playsInline=true;
-
+const poemAudio=document.getElementById("poemAudio");
 let poemStarted=false;
 let timelineIndex=0;
 let poemRaf=0;
+let fallbackTimer=0;
 
 function revealTo(lineIndex,endIndex){
     const chars=lineElements[lineIndex].chars;
     for(let i=0;i<Math.min(endIndex,chars.length);i++)chars[i].classList.add("visible");
 }
 
+function revealWholePoem(){
+    lineElements.forEach(item=>item.chars.forEach(span=>span.classList.add("visible")));
+    poemYear.classList.add("visible");
+}
+
 function syncPoemToAudio(){
-    const now=poemAudio.currentTime;
+    const now=poemAudio.currentTime||0;
     while(timelineIndex<poemTimeline.length&&poemTimeline[timelineIndex].time<=now){
         const cue=poemTimeline[timelineIndex++];
         revealTo(cue.line,cue.end);
@@ -198,49 +204,55 @@ function resetPoemSync(){
     poemYear.classList.remove("visible");
 }
 
-function startPoemAudio(){
+function removePoemStartListeners(){
+    document.removeEventListener("click",startPoemFromGesture,true);
+    document.removeEventListener("touchend",startPoemFromGesture,true);
+    document.removeEventListener("pointerup",startPoemFromGesture,true);
+    document.removeEventListener("keydown",startPoemFromGesture,true);
+}
+
+function onPoemStarted(){
+    poemStarted=true;
+    clearTimeout(fallbackTimer);
+    removePoemStartListeners();
+    cancelAnimationFrame(poemRaf);
+    poemRaf=requestAnimationFrame(syncPoemToAudio);
+}
+
+function tryStartPoem(){
     if(poemStarted)return;
     resetPoemSync();
-    poemAudio.currentTime=0;
-
+    try{poemAudio.currentTime=0}catch(e){}
     const p=poemAudio.play();
     if(p&&typeof p.then==="function"){
-        p.then(()=>{
-            poemStarted=true;
-            cancelAnimationFrame(poemRaf);
-            poemRaf=requestAnimationFrame(syncPoemToAudio);
-            removePoemStartListeners();
-        }).catch(()=>{});
-    }else{
-        poemStarted=true;
-        poemRaf=requestAnimationFrame(syncPoemToAudio);
-        removePoemStartListeners();
+        p.then(onPoemStarted).catch(()=>{});
+    }else if(!poemAudio.paused){
+        onPoemStarted();
     }
 }
 
-function poemStartGesture(){
-    startPoemAudio();
+function startPoemFromGesture(){
+    tryStartPoem();
 }
 
-function removePoemStartListeners(){
-    window.removeEventListener("pointerup",poemStartGesture,true);
-    window.removeEventListener("touchend",poemStartGesture,true);
-    window.removeEventListener("click",poemStartGesture,true);
-    window.removeEventListener("keydown",poemStartGesture,true);
-}
-
-window.addEventListener("pointerup",poemStartGesture,true);
-window.addEventListener("touchend",poemStartGesture,true);
-window.addEventListener("click",poemStartGesture,true);
-window.addEventListener("keydown",poemStartGesture,true);
-
-poemAudio.addEventListener("error",()=>{
-    lineElements.forEach(item=>item.chars.forEach(span=>span.classList.add("visible")));
+poemAudio.addEventListener("play",onPoemStarted);
+poemAudio.addEventListener("timeupdate",syncPoemToAudio);
+poemAudio.addEventListener("ended",()=>{
     poemYear.classList.add("visible");
 });
+poemAudio.addEventListener("error",revealWholePoem);
 
-/* Пробуем автозапуск; если браузер его блокирует, первое действие пользователя запускает запись. */
-startPoemAudio();
+document.addEventListener("click",startPoemFromGesture,true);
+document.addEventListener("touchend",startPoemFromGesture,true);
+document.addEventListener("pointerup",startPoemFromGesture,true);
+document.addEventListener("keydown",startPoemFromGesture,true);
+
+/* Пробуем автозапуск. Если браузер запрещает звук, первое касание/клик запускает его.
+   Если по какой-либо причине аудио вообще не стартовало, стих не остаётся пустым. */
+tryStartPoem();
+fallbackTimer=window.setTimeout(()=>{
+    if(!poemStarted)revealWholePoem();
+},8000);
 
 const links=document.querySelectorAll(".menu-item,.blog-hotspot");
 const transitionLayer=document.getElementById("transitionLayer");
