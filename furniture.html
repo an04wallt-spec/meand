@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Мебель — MeAND</title>
+<link rel="icon" type="image/png" href="/Favicon.png">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<style>
+:root{--bg:#ffffff;--fg:#111111}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--fg)}
+body{font-family:Georgia,"Times New Roman",serif}
+.stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.status{position:relative;font-size:clamp(18px,2.2vw,34px);font-style:italic;letter-spacing:.06em;white-space:nowrap;opacity:.08;text-shadow:0 0 3px currentColor;animation:breath 5.5s ease-in-out infinite,drift 13s ease-in-out infinite alternate;user-select:none}
+@keyframes breath{0%,100%{opacity:.06;text-shadow:0 0 2px currentColor}50%{opacity:.9;text-shadow:0 0 8px currentColor,0 0 22px currentColor}}
+@keyframes drift{from{transform:translate3d(-2.2vw,-1.2vh,0)}to{transform:translate3d(2.2vw,1.2vh,0)}}
+@media(max-width:700px){.status{font-size:clamp(15px,5vw,24px);letter-spacing:.035em}}
+@media(prefers-reduced-motion:reduce){.status{animation:none;opacity:.75}}
+</style>
+</head>
+<body>
+<main class="stage">
+  <div class="status">ведётся разработка страницы...</div>
+</main>
+</body>
+</html>
