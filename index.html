@@ -41,11 +41,17 @@ body{font-family:Georgia,"Times New Roman",serif}
 .poem-char.visible{opacity:1}
 .poem-year{display:block;margin-top:.65em;text-align:right;font-size:.82em;font-style:normal;letter-spacing:.12em;opacity:0;transition:opacity 800ms ease}
 .poem-year.visible{opacity:.72}
+.poem-cue{position:absolute;z-index:2;left:50%;top:44%;width:58px;height:34px;transform:translate(-50%,-50%);border:0;padding:0;background:transparent;color:var(--poem-color);opacity:.15;pointer-events:auto;cursor:pointer;-webkit-tap-highlight-color:transparent;animation:textBreath var(--breath-time) ease-in-out infinite;transition:opacity .7s ease,transform .7s ease}
+.poem-cue:hover,.poem-cue:focus-visible{opacity:.95;outline:none}
+.poem-cue.gone{opacity:0;transform:translate(-50%,-50%) scale(.82);pointer-events:none;animation:none}
+.poem-cue-staff{position:absolute;left:1px;right:1px;top:5px;height:1px;background:currentColor;box-shadow:0 5px currentColor,0 10px currentColor,0 15px currentColor,0 20px currentColor}
+.poem-cue-note{position:absolute;left:29px;top:14px;width:9px;height:6px;border-radius:50%;background:currentColor;transform:rotate(-18deg)}
+.poem-cue-note::after{content:"";position:absolute;width:1px;height:17px;left:8px;bottom:2px;background:currentColor;transform:rotate(18deg);transform-origin:bottom center}
 .transition-layer{position:fixed;inset:0;z-index:100;opacity:0;pointer-events:none;background:#fff;transition:opacity var(--page-transition-time) cubic-bezier(.45,0,.2,1)}
 body.leaving .transition-layer{opacity:1}body.leaving .home{opacity:0;filter:blur(2px) brightness(1.05)}
 @media(max-aspect-ratio:9/16){.artboard{width:100vw;height:auto;aspect-ratio:9/16;right:0;top:50%;transform:translateY(-50%)}}
-@media(max-width:700px){.menu-item{font-size:clamp(14px,3.7vw,20px)}.blog-hotspot{display:block;position:absolute;z-index:30;left:82%;top:72%;width:12%;height:12%;border:0;border-radius:50%;background:transparent;text-decoration:none;-webkit-tap-highlight-color:transparent}.blog-hotspot:focus-visible{outline:1px solid rgba(255,255,255,.28);outline-offset:-6px}.poem{left:4vw;bottom:clamp(8px,1.5vh,18px);top:auto;transform:none;max-width:61vw;font-size:clamp(12px,3.35vw,17px);line-height:1.70;letter-spacing:.01em;white-space:nowrap;opacity:.72}.poem-line{min-height:1.70em}.poem-year{margin-top:.55em}}
-@media(prefers-reduced-motion:reduce){.menu-item{animation:none}.menu-item{opacity:.80}.home,.transition-layer{transition-duration:.25s}.poem-char{opacity:1;transition:none}.poem-year{opacity:.72;transition:none}}
+@media(max-width:700px){.menu-item{font-size:clamp(14px,3.7vw,20px)}.poem-cue{width:48px;height:30px;top:43%}.poem-cue-staff{top:4px}.poem-cue-note{left:24px;top:13px;width:8px;height:5px}.poem-cue-note::after{height:15px;left:7px}.blog-hotspot{display:block;position:absolute;z-index:30;left:82%;top:72%;width:12%;height:12%;border:0;border-radius:50%;background:transparent;text-decoration:none;-webkit-tap-highlight-color:transparent}.blog-hotspot:focus-visible{outline:1px solid rgba(255,255,255,.28);outline-offset:-6px}.poem{left:4vw;bottom:clamp(8px,1.5vh,18px);top:auto;transform:none;max-width:61vw;font-size:clamp(12px,3.35vw,17px);line-height:1.70;letter-spacing:.01em;white-space:nowrap;opacity:.72}.poem-line{min-height:1.70em}.poem-year{margin-top:.55em}}
+@media(prefers-reduced-motion:reduce){.menu-item{animation:none}.menu-item{opacity:.80}.poem-cue{animation:none;opacity:.65}.home,.transition-layer{transition-duration:.25s}.poem-char{opacity:1;transition:none}.poem-year{opacity:.72;transition:none}}
 
 /* Sparse, non-interactive light drifting above the artwork. */
 .light-dust{position:absolute;inset:0;z-index:10;overflow:hidden;pointer-events:none;contain:strict}
@@ -93,7 +99,7 @@ body.leaving .transition-layer{opacity:1}body.leaving .home{opacity:0;filter:blu
 <div class="artboard">
 <img class="artwork" src="main-bg.png" alt="" draggable="false">
 <nav class="string-menu" aria-label="Основные разделы">
-<a class="menu-item menu-furniture" href="https://kb911.ru/" data-color="#ffffff" data-sound="https://cdn.jsdelivr.net/npm/tonejs-instrument-guitar-acoustic-wav@1.1.0/E2.wav">Мебель</a>
+<a class="menu-item menu-furniture" href="furniture.html" data-color="#ffffff" data-sound="https://cdn.jsdelivr.net/npm/tonejs-instrument-guitar-acoustic-wav@1.1.0/E2.wav">Мебель</a>
 <a class="menu-item menu-scripts" href="scripts.html" data-color="#18382b" data-sound="https://cdn.jsdelivr.net/npm/tonejs-instrument-guitar-acoustic-wav@1.1.0/A2.wav">Мастерская</a>
 <a class="menu-item menu-other" href="other.html" data-color="#d8d0c4" data-sound="https://cdn.jsdelivr.net/npm/tonejs-instrument-guitar-acoustic-wav@1.1.0/D3.wav">Разное</a>
 <a class="menu-item menu-prose" href="prose.html" data-color="#332d2a" data-sound="https://cdn.jsdelivr.net/npm/tonejs-instrument-guitar-acoustic-wav@1.1.0/G3.wav">Проза</a>
@@ -101,7 +107,7 @@ body.leaving .transition-layer{opacity:1}body.leaving .home{opacity:0;filter:blu
 </nav>
 <a class="blog-hotspot" href="blog.html" data-color="#160d0a" aria-label="Мысли"></a>
 </div>
-<section class="poem" id="poem" aria-label="Стихотворение"><div class="poem-text" id="poemText"></div><span class="poem-year" id="poemYear"></span></section>
+<section class="poem" id="poem" aria-label="Стихотворение"><button class="poem-cue" id="poemCue" type="button" aria-label="Слушать стихотворение"><span class="poem-cue-staff" aria-hidden="true"></span><span class="poem-cue-note" aria-hidden="true"></span></button><div class="poem-text" id="poemText"></div><span class="poem-year" id="poemYear"></span></section>
 <audio id="poemAudio" preload="auto" playsinline>
   <source src="vremya-stiraet-vse.mp3?v=20261004-1" type="audio/mpeg">
 </audio>
@@ -170,10 +176,12 @@ const poemTimeline=[
 ];
 
 const poemAudio=document.getElementById("poemAudio");
+const poemCue=document.getElementById("poemCue");
+const home=document.querySelector(".home");
 let poemStarted=false;
+let poemStarting=false;
 let timelineIndex=0;
 let poemRaf=0;
-let fallbackTimer=0;
 
 function revealTo(lineIndex,endIndex){
     const chars=lineElements[lineIndex].chars;
@@ -204,55 +212,53 @@ function resetPoemSync(){
     poemYear.classList.remove("visible");
 }
 
-function removePoemStartListeners(){
-    document.removeEventListener("click",startPoemFromGesture,true);
-    document.removeEventListener("touchend",startPoemFromGesture,true);
-    document.removeEventListener("pointerup",startPoemFromGesture,true);
-    document.removeEventListener("keydown",startPoemFromGesture,true);
-}
-
 function onPoemStarted(){
+    poemStarting=false;
     poemStarted=true;
-    clearTimeout(fallbackTimer);
-    removePoemStartListeners();
+    poemCue.classList.add("gone");
     cancelAnimationFrame(poemRaf);
     poemRaf=requestAnimationFrame(syncPoemToAudio);
 }
 
 function tryStartPoem(){
-    if(poemStarted)return;
+    if(poemStarted||poemStarting)return;
+    poemStarting=true;
     resetPoemSync();
     try{poemAudio.currentTime=0}catch(e){}
     const p=poemAudio.play();
     if(p&&typeof p.then==="function"){
-        p.then(onPoemStarted).catch(()=>{});
+        p.then(onPoemStarted).catch(()=>{poemStarting=false});
     }else if(!poemAudio.paused){
         onPoemStarted();
+    }else{
+        poemStarting=false;
     }
 }
 
-function startPoemFromGesture(){
+function isNavigationTarget(target){
+    return target instanceof Element&&!!target.closest(".menu-item,.blog-hotspot");
+}
+
+function startPoemFromFreeArea(event){
+    if(isNavigationTarget(event.target))return;
     tryStartPoem();
 }
 
 poemAudio.addEventListener("play",onPoemStarted);
 poemAudio.addEventListener("timeupdate",syncPoemToAudio);
-poemAudio.addEventListener("ended",()=>{
-    poemYear.classList.add("visible");
-});
+poemAudio.addEventListener("ended",()=>{poemYear.classList.add("visible")});
 poemAudio.addEventListener("error",revealWholePoem);
 
-document.addEventListener("click",startPoemFromGesture,true);
-document.addEventListener("touchend",startPoemFromGesture,true);
-document.addEventListener("pointerup",startPoemFromGesture,true);
-document.addEventListener("keydown",startPoemFromGesture,true);
+/* Вся свободная область главной запускает стих. Струны и скрытая зона блога исключены. */
+home.addEventListener("pointerup",startPoemFromFreeArea);
+poemCue.addEventListener("click",event=>{
+    event.stopPropagation();
+    tryStartPoem();
+});
 
-/* Пробуем автозапуск. Если браузер запрещает звук, первое касание/клик запускает его.
-   Если по какой-либо причине аудио вообще не стартовало, стих не остаётся пустым. */
+/* Если браузер разрешает автозвук, стартуем без действия пользователя.
+   Если блокирует — музыкальный знак остаётся видимым до первого нажатия. */
 tryStartPoem();
-fallbackTimer=window.setTimeout(()=>{
-    if(!poemStarted)revealWholePoem();
-},8000);
 
 const links=document.querySelectorAll(".menu-item,.blog-hotspot");
 const transitionLayer=document.getElementById("transitionLayer");
