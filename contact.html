@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Contact — MeAND</title>
+<link rel="icon" type="image/png" href="/Favicon.png">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;background:#080503;color:#f1eee9}
+body{font-family:Georgia,"Times New Roman",serif}
+.stage{
+  min-height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  text-align:center;
+}
+.card{
+  display:flex;
+  flex-direction:column;
+  gap:.7em;
+  font-size:clamp(20px,2.2vw,34px);
+  line-height:1.35;
+  letter-spacing:.04em;
+}
+.name{
+  opacity:.95;
+}
+.person{
+  opacity:.72;
+  font-size:.82em;
+}
+.mail{
+  color:#b88962;
+  text-decoration:none;
+  font-size:.72em;
+  opacity:.72;
+  transition:opacity .3s ease,text-shadow .3s ease;
+}
+.mail:hover,.mail:focus-visible{
+  opacity:1;
+  outline:none;
+  text-shadow:0 0 8px rgba(184,137,98,.35);
+}
+</style>
+</head>
+<body>
+<main class="stage">
+  <div class="card">
+    <div class="name">Meand</div>
+    <div class="person">Andrey Panov</div>
+    <a class="mail" href="mailto:andrey-a-ka@yandex.com">andrey-a-ka@yandex.com</a>
+  </div>
+</main>
+</body>
+</html>
