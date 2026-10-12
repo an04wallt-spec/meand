@@ -7,21 +7,143 @@
 <link rel="icon" type="image/png" href="/Favicon.png">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <style>
-:root{--bg:#292929;--fg:#f1eee9}
+:root{
+  --bg:#292929;
+  --fg:#eee9e3;
+  --ghost:#d8d0c4;
+}
 *{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--fg)}
-body{font-family:Georgia,"Times New Roman",serif}
-.stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.status{position:relative;text-decoration:none;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;font-size:clamp(18px,2.2vw,34px);font-style:italic;letter-spacing:.06em;white-space:nowrap;opacity:.08;text-shadow:0 0 3px currentColor;animation:breath 5.5s ease-in-out infinite,drift 13s ease-in-out infinite alternate;user-select:none}
-@keyframes breath{0%,100%{opacity:.06;text-shadow:0 0 2px currentColor}50%{opacity:.9;text-shadow:0 0 8px currentColor,0 0 22px currentColor}}
-@keyframes drift{from{transform:translate3d(-2.2vw,-1.2vh,0)}to{transform:translate3d(2.2vw,1.2vh,0)}}
-@media(max-width:700px){.status{font-size:clamp(15px,5vw,24px);letter-spacing:.035em}}
-@media(prefers-reduced-motion:reduce){.status{animation:none;opacity:.75}}
+html,body{
+  margin:0;
+  width:100%;
+  min-height:100%;
+  background:var(--bg);
+  color:var(--fg);
+}
+body{
+  font-family:Georgia,"Times New Roman",serif;
+}
+.page{
+  position:relative;
+  min-height:100vh;
+  min-height:100dvh;
+  overflow:hidden;
+  background:var(--bg);
+}
+.guitar{
+  position:absolute;
+  z-index:0;
+  right:-2vw;
+  top:50%;
+  width:min(58vw,760px);
+  height:auto;
+  transform:translateY(-50%);
+  color:var(--ghost);
+  opacity:.055;
+  pointer-events:none;
+  user-select:none;
+}
+.guitar *{
+  vector-effect:non-scaling-stroke;
+}
+.content{
+  position:relative;
+  z-index:2;
+  min-height:100vh;
+  min-height:100dvh;
+  display:flex;
+  align-items:flex-start;
+  justify-content:flex-start;
+  padding:clamp(28px,5vw,72px);
+}
+.title{
+  margin:0;
+  font-size:clamp(30px,4.2vw,64px);
+  font-weight:400;
+  letter-spacing:.04em;
+  opacity:.78;
+}
+.home{
+  position:fixed;
+  z-index:3;
+  left:clamp(18px,3vw,42px);
+  bottom:clamp(16px,2.6vw,34px);
+  color:var(--fg);
+  text-decoration:none;
+  font-size:clamp(13px,1.1vw,17px);
+  letter-spacing:.08em;
+  opacity:.28;
+  transition:opacity .25s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+.home:hover,.home:focus-visible{
+  opacity:.78;
+  outline:none;
+}
+@media(max-width:700px){
+  .content{
+    padding:24px 20px;
+  }
+  .title{
+    font-size:clamp(28px,10vw,44px);
+  }
+  .guitar{
+    width:118vw;
+    right:-34vw;
+    top:53%;
+    opacity:.045;
+  }
+  .home{
+    left:18px;
+    bottom:18px;
+  }
+}
 </style>
 </head>
 <body>
-<main class="stage">
-  <a class="status" href="index.html" aria-label="Вернуться на главную">ведётся разработка страницы...</a>
+<main class="page">
+  <svg class="guitar" viewBox="0 0 420 920" aria-hidden="true">
+    <g fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M210 32
+               C191 32 179 46 181 67
+               L184 188
+               C184 214 172 235 151 251
+               C118 276 97 311 98 353
+               C99 389 119 420 149 441
+               C111 463 84 501 82 548
+               C79 617 130 670 190 674
+               C250 678 305 632 311 566
+               C315 514 289 470 250 444
+               C280 420 300 386 301 349
+               C302 307 281 273 248 249
+               C226 233 215 213 216 188
+               L219 67
+               C221 46 229 32 210 32Z"/>
+      <path d="M185 190 L235 190"/>
+      <path d="M188 158 L232 158"/>
+      <path d="M191 126 L229 126"/>
+      <path d="M194 94 L226 94"/>
+      <path d="M199 62 L221 62"/>
+      <ellipse cx="210" cy="385" rx="31" ry="31"/>
+      <path d="M177 518 Q210 532 243 518"/>
+      <path d="M174 527 Q210 542 246 527"/>
+      <path d="M180 493 L240 493"/>
+      <path d="M191 673 L191 860"/>
+      <path d="M199 673 L199 860"/>
+      <path d="M207 673 L207 860"/>
+      <path d="M215 673 L215 860"/>
+      <path d="M223 673 L223 860"/>
+      <path d="M231 673 L231 860"/>
+      <path d="M188 860 Q210 884 232 860"/>
+      <path d="M181 48 Q210 18 239 48"/>
+    </g>
+  </svg>
+
+  <section class="content">
+    <h1 class="title">Тексты</h1>
+  </section>
+
+  <a class="home" href="index.html">на главную</a>
 </main>
 </body>
 </html>
