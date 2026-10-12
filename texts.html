@@ -10,6 +10,7 @@
 :root{
   --bg:#292929;
   --fg:#eee9e3;
+  --muted:#b9b2aa;
 }
 *{box-sizing:border-box}
 html,body{
@@ -26,11 +27,11 @@ body{
   position:relative;
   min-height:100vh;
   min-height:100dvh;
-  overflow:hidden;
+  overflow-x:hidden;
   background:var(--bg);
 }
 .artboard{
-  position:absolute;
+  position:fixed;
   z-index:0;
   right:0;
   top:50%;
@@ -62,34 +63,59 @@ body{
 .content{
   position:relative;
   z-index:2;
+  width:min(760px,86vw);
   min-height:100vh;
   min-height:100dvh;
-  padding:clamp(28px,5vw,72px);
+  padding:clamp(28px,5vw,72px) clamp(22px,4vw,56px) 100px;
 }
 .title{
-  margin:0;
+  margin:0 0 .85em;
   font-size:clamp(30px,4.2vw,64px);
   font-weight:400;
   letter-spacing:.04em;
   opacity:.78;
 }
-.home{
-  position:fixed;
-  z-index:3;
-  left:clamp(18px,3vw,42px);
-  bottom:clamp(16px,2.6vw,34px);
+.works{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:grid;
+  gap:.24em;
+}
+.works a{
+  display:inline-block;
   color:var(--fg);
   text-decoration:none;
-  font-size:clamp(13px,1.1vw,17px);
-  letter-spacing:.08em;
-  opacity:.28;
-  transition:opacity .25s ease;
+  font-size:clamp(17px,1.5vw,22px);
+  line-height:1.45;
+  letter-spacing:.015em;
+  opacity:.38;
+  transition:opacity .22s ease,text-shadow .22s ease,transform .22s ease;
   -webkit-tap-highlight-color:transparent;
 }
-.home:hover,.home:focus-visible{
-  opacity:.78;
+.works a:hover,.works a:focus-visible{
+  opacity:.92;
   outline:none;
+  text-shadow:0 0 9px rgba(238,233,227,.16);
+  transform:translateX(4px);
 }
+.footer{
+  margin-top:2.4em;
+  padding-top:1.1em;
+  border-top:1px solid rgba(238,233,227,.08);
+  display:flex;
+  gap:1.4em;
+  flex-wrap:wrap;
+}
+.footer a{
+  color:var(--muted);
+  text-decoration:none;
+  font-size:clamp(13px,1vw,16px);
+  letter-spacing:.05em;
+  opacity:.36;
+  transition:opacity .2s ease;
+}
+.footer a:hover,.footer a:focus-visible{opacity:.8;outline:none}
 @media(max-aspect-ratio:9/16){
   .artboard{
     width:100vw;
@@ -101,31 +127,71 @@ body{
   }
 }
 @media(max-width:700px){
-  .content{padding:24px 20px}
-  .title{font-size:clamp(28px,10vw,44px)}
-  .artwork{opacity:.075}
-  .home{left:18px;bottom:18px}
+  .content{
+    width:100%;
+    padding:24px 20px 86px;
+  }
+  .title{
+    font-size:clamp(28px,10vw,44px);
+    margin-bottom:.75em;
+  }
+  .works{gap:.18em}
+  .works a{
+    font-size:clamp(16px,4.5vw,20px);
+    line-height:1.42;
+  }
+  .artwork{opacity:.07}
+  .footer{margin-top:2em;gap:1em}
 }
 </style>
 </head>
 <body>
 <main class="page">
   <div class="artboard" aria-hidden="true">
-    <img
-      class="artwork"
-      src="main-bg.png"
-      alt=""
-      loading="lazy"
-      decoding="async"
-      fetchpriority="low"
-      draggable="false">
+    <img class="artwork" src="main-bg.png" alt="" loading="lazy" decoding="async" fetchpriority="low" draggable="false">
   </div>
 
   <section class="content">
     <h1 class="title">Тексты</h1>
-  </section>
+    <ul class="works">
+        <li><a href="https://stihi.ru/2002/10/04-66" target="_blank" rel="noopener">ХОЛОД</a></li>
+        <li><a href="https://stihi.ru/2002/10/04-59" target="_blank" rel="noopener">Я закрываю дверь</a></li>
+        <li><a href="https://stihi.ru/2002/10/04-61" target="_blank" rel="noopener">Девушка с веслом</a></li>
+        <li><a href="https://stihi.ru/2002/10/04-56" target="_blank" rel="noopener">Метро</a></li>
+        <li><a href="https://stihi.ru/2002/10/04-54" target="_blank" rel="noopener">песня СиТ</a></li>
+        <li><a href="https://stihi.ru/2002/10/04-48" target="_blank" rel="noopener">Нарисуй!</a></li>
+        <li><a href="https://stihi.ru/2002/10/04-44" target="_blank" rel="noopener">Серый дождь</a></li>
+        <li><a href="https://stihi.ru/2002/10/04-36" target="_blank" rel="noopener">Ошибки</a></li>
+        <li><a href="https://stihi.ru/2002/10/04-32" target="_blank" rel="noopener">Не говори мне о Любви</a></li>
+        <li><a href="https://stihi.ru/2002/10/04-20" target="_blank" rel="noopener">Простуда блюз</a></li>
+        <li><a href="https://stihi.ru/2002/10/04-17" target="_blank" rel="noopener">Ты вспомни...</a></li>
+        <li><a href="https://stihi.ru/2002/10/04-14" target="_blank" rel="noopener">Зима</a></li>
+        <li><a href="https://stihi.ru/2002/10/04-10" target="_blank" rel="noopener">Где-то там далеко</a></li>
+        <li><a href="https://stihi.ru/2002/10/04-09" target="_blank" rel="noopener">Мне всё равно</a></li>
+        <li><a href="https://stihi.ru/2002/10/03-1043" target="_blank" rel="noopener">ПЕЧАЛЬНЫЕ ВЕСТИ</a></li>
+        <li><a href="https://stihi.ru/2002/10/03-1038" target="_blank" rel="noopener">Ода о полночном чае</a></li>
+        <li><a href="https://stihi.ru/2002/10/03-1033" target="_blank" rel="noopener">Не плачь родная</a></li>
+        <li><a href="https://stihi.ru/2002/10/03-1031" target="_blank" rel="noopener">Ты мне звёзды</a></li>
+        <li><a href="https://stihi.ru/2002/10/03-1029" target="_blank" rel="noopener">Моей Любимой</a></li>
+        <li><a href="https://stihi.ru/2002/10/03-1026" target="_blank" rel="noopener">Потехи до утра</a></li>
+        <li><a href="https://stihi.ru/2002/10/03-1022" target="_blank" rel="noopener">Может это измена</a></li>
+        <li><a href="https://stihi.ru/2002/10/03-1019" target="_blank" rel="noopener">Дождливость ночи</a></li>
+        <li><a href="https://stihi.ru/2002/10/03-1016" target="_blank" rel="noopener">Немного тепла</a></li>
+        <li><a href="https://stihi.ru/2002/10/03-1013" target="_blank" rel="noopener">Когда ты только будешь рядом?</a></li>
+        <li><a href="https://stihi.ru/2002/10/03-1010" target="_blank" rel="noopener">Дождь идёт</a></li>
+        <li><a href="https://stihi.ru/2002/09/28-109" target="_blank" rel="noopener">Сон (Город спит)</a></li>
+        <li><a href="https://stihi.ru/2002/09/28-104" target="_blank" rel="noopener">Повергнутые Властью</a></li>
+        <li><a href="https://stihi.ru/2002/09/28-102" target="_blank" rel="noopener">Обьясни мне</a></li>
+        <li><a href="https://stihi.ru/2002/09/28-97" target="_blank" rel="noopener">Грустный марш</a></li>
+        <li><a href="https://stihi.ru/2002/09/28-90" target="_blank" rel="noopener">Мы падаем вниз</a></li>
+        <li><a href="https://stihi.ru/2002/09/28-88" target="_blank" rel="noopener">Моё безобразное лицо</a></li>
+    </ul>
 
-  <a class="home" href="index.html">на главную</a>
+    <div class="footer">
+      <a href="https://stihi.ru/avtor/hikto" target="_blank" rel="noopener">Панов Андрей на Стихи.ру</a>
+      <a href="index.html">на главную</a>
+    </div>
+  </section>
 </main>
 </body>
 </html>
