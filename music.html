@@ -9,6 +9,8 @@
 <meta name="robots" content="index,follow">
 <meta name="description" content="MeAnd — музыкальный проект Андрея Панова. Авторские песни, музыка, тексты и официальные ссылки на релизы и стриминговые площадки.">
 <meta property="og:type" content="music.musician">
+<meta property="og:site_name" content="MeAnd">
+<meta property="og:locale" content="ru_RU">
 <meta property="og:url" content="https://meand.ru/music.html">
 <meta property="og:title" content="MeAnd — музыка Андрея Панова">
 <meta property="og:description" content="Официальная музыкальная страница MeAnd: авторские песни, тексты, аудио и ссылки на релизы.">
@@ -20,18 +22,45 @@
 <script type="application/ld+json">
 {
   "@context":"https://schema.org",
-  "@type":"MusicGroup",
-  "name":"MeAnd",
-  "alternateName":"MeAnd",
-  "url":"https://meand.ru/music.html",
-  "description":"Музыкальный проект Андрея Панова. Авторские песни, музыка и тексты.",
-  "founder":{
-    "@type":"Person",
-    "name":"Andrey Panov",
-    "url":"https://meand.ru/contact.html"
-  },
-  "sameAs":[
-    "https://band.link/meand"
+  "@graph":[
+    {
+      "@type":"WebPage",
+      "@id":"https://meand.ru/music.html#page",
+      "url":"https://meand.ru/music.html",
+      "name":"MeAnd — музыка Андрея Панова",
+      "description":"Официальная музыкальная страница MeAnd: авторские песни, аудио, релизы и ссылки на стриминговые площадки.",
+      "inLanguage":"ru",
+      "isPartOf":{"@id":"https://meand.ru/#website"},
+      "about":{"@id":"https://meand.ru/#meand"}
+    },
+    {
+      "@type":"Person",
+      "@id":"https://meand.ru/#andrey-panov",
+      "name":"Andrey Panov",
+      "alternateName":"Панов Андрей Викторович",
+      "url":"https://meand.ru/",
+      "sameAs":["https://stihi.ru/avtor/hikto"]
+    },
+    {
+      "@type":"MusicGroup",
+      "@id":"https://meand.ru/#meand",
+      "name":"MeAnd",
+      "url":"https://meand.ru/music.html",
+      "founder":{"@id":"https://meand.ru/#andrey-panov"},
+      "sameAs":["https://band.link/meand"]
+    },
+    {
+      "@type":"MusicRecording",
+      "@id":"https://meand.ru/music.html#vremya-stiraet-vse",
+      "name":"Время стирает всё",
+      "byArtist":{"@id":"https://meand.ru/#meand"},
+      "url":"https://meand.ru/music.html",
+      "audio":{
+        "@type":"AudioObject",
+        "contentUrl":"https://meand.ru/vremya-stiraet-vse.mp3",
+        "encodingFormat":"audio/mpeg"
+      }
+    }
   ]
 }
 </script>
@@ -225,6 +254,13 @@ body{
   color:rgba(241,238,233,.48);
   font-variant-numeric:tabular-nums;
 }
+.release-intro{
+  max-width:620px;
+  margin:-.35em 0 1.5em;
+  color:rgba(241,238,233,.54);
+  font-size:clamp(14px,1.05vw,16px);
+  line-height:1.55;
+}
 .release-list{
   display:grid;
   gap:0;
@@ -375,7 +411,8 @@ body{
     </section>
 
     <section class="section" aria-labelledby="releases-title">
-      <h2 class="section-title" id="releases-title">Релизы</h2>
+      <h2 class="section-title" id="releases-title">Релизы MeAnd</h2>
+      <p class="release-intro">Официальные музыкальные релизы проекта MeAnd Андрея Панова.</p>
 
       <div class="release-list">
         <article class="release-item">
