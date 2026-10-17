@@ -64,11 +64,10 @@ body{
   position:fixed;
   z-index:0;
   right:0;
-  top:50%;
+  top:0;
   height:100vh;
-  height:100dvh;
   aspect-ratio:9/16;
-  transform:translateY(-50%);
+  transform:none;
   overflow:visible;
   pointer-events:none;
 }
@@ -256,8 +255,8 @@ body{
 @media(max-aspect-ratio:9/16){
   .artboard{
     width:100vw;
-    height:auto;
-    aspect-ratio:9/16;
+    height:100vh;
+    aspect-ratio:auto;
   }
 }
 @media(max-width:700px){
