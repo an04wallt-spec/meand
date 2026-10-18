@@ -51,14 +51,16 @@
     },
     {
       "@type":"MusicRecording",
-      "@id":"https://meand.ru/music.html#vremya-stiraet-vse",
-      "name":"Время стирает всё",
+      "@id":"https://meand.ru/music.html#metro",
+      "name":"Метро",
       "byArtist":{"@id":"https://meand.ru/#meand"},
-      "url":"https://meand.ru/music.html",
+      "url":"https://meand.ru/music.html#metro",
+      "sameAs":"https://music.yandex.ru/album/44513343",
       "audio":{
         "@type":"AudioObject",
-        "contentUrl":"https://meand.ru/vremya-stiraet-vse.mp3",
-        "encodingFormat":"audio/mpeg"
+        "contentUrl":"https://meand.ru/metro-128.mp3",
+        "encodingFormat":"audio/mpeg",
+        "duration":"PT2M43S"
       }
     }
   ]
@@ -186,7 +188,25 @@ body{
   width:min(620px,100%);
 }
 .audio-meta{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:18px;
   margin-bottom:1em;
+}
+.track-link{
+  flex:0 0 auto;
+  color:var(--warm);
+  text-decoration:none;
+  font-size:clamp(12px,.95vw,14px);
+  opacity:.72;
+  border-bottom:1px solid rgba(197,152,115,.28);
+  padding-bottom:.12em;
+}
+.track-link:hover,.track-link:focus-visible{
+  opacity:1;
+  outline:none;
+  border-color:var(--warm);
 }
 .audio-title{
   margin:0 0 .28em;
@@ -392,20 +412,23 @@ body{
 
     <section class="section" aria-labelledby="listen-title">
       <h2 class="section-title" id="listen-title">Слушать здесь</h2>
-      <div class="audio-card">
+      <div class="audio-card" id="metro">
         <div class="audio-meta">
-          <p class="audio-title">Время стирает всё</p>
-          <p class="audio-note">авторское чтение под гитару</p>
+          <div>
+            <p class="audio-title">Метро</p>
+            <p class="audio-note">MeAnd</p>
+          </div>
+          <a class="track-link" href="https://music.yandex.ru/album/44513343">Яндекс Музыка ↗</a>
         </div>
         <div class="player">
-          <button class="play" id="playButton" type="button" aria-label="Воспроизвести">▶</button>
-          <div class="progress" id="progress" role="slider" aria-label="Позиция воспроизведения" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <button class="play" id="playButton" type="button" aria-label="Воспроизвести Метро">▶</button>
+          <div class="progress" id="progress" role="slider" aria-label="Позиция воспроизведения Метро" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
             <span class="progress-fill" id="progressFill"></span>
           </div>
           <span class="time" id="time">0:00</span>
         </div>
         <audio id="audio" preload="none">
-          <source src="vremya-stiraet-vse.mp3" type="audio/mpeg">
+          <source src="metro-128.mp3" type="audio/mpeg">
         </audio>
       </div>
     </section>
