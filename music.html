@@ -427,9 +427,7 @@ body{
           </div>
           <span class="time" id="time">0:00</span>
         </div>
-        <audio id="audio" preload="none">
-          <source src="metro-128.mp3" type="audio/mpeg">
-        </audio>
+        <audio id="audio" src="/metro-128.mp3" preload="metadata" playsinline webkit-playsinline></audio>
       </div>
     </section>
 
@@ -495,10 +493,22 @@ body{
   };
 
   play.addEventListener("click",()=>{
-    if(audio.paused){
-      audio.play().catch(()=>{});
-    }else{
+    if(!audio.paused){
       audio.pause();
+      return;
+    }
+
+    if(audio.readyState===0){
+      audio.load();
+    }
+
+    const result=audio.play();
+    if(result && typeof result.catch==="function"){
+      result.catch(error=>{
+        console.error("Audio playback failed:",error);
+        play.textContent="▶";
+        play.setAttribute("aria-label","Воспроизвести Метро");
+      });
     }
   });
 
