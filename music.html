@@ -190,6 +190,11 @@ body{
 .audio-card{
   width:min(620px,100%);
 }
+.audio-card-secondary{
+  margin-top:32px;
+  padding-top:28px;
+  border-top:1px solid var(--line);
+}
 .audio-meta{
   display:flex;
   align-items:flex-end;
@@ -379,6 +384,23 @@ body{
         </div>
         <audio id="audio" src="/audio/metro-128.mp3" preload="metadata" playsinline webkit-playsinline></audio>
       </div>
+
+      <div class="audio-card audio-card-secondary" id="kogda-umolknut">
+        <div class="audio-meta">
+          <div>
+            <p class="audio-title">Когда умолкнут голоса</p>
+            <p class="audio-note">акустическая версия</p>
+          </div>
+        </div>
+        <div class="player">
+          <button class="play" id="playButton2" type="button" aria-label="Воспроизвести Когда умолкнут голоса">▶</button>
+          <div class="progress" id="progress2" role="slider" aria-label="Позиция воспроизведения Когда умолкнут голоса" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <span class="progress-fill" id="progressFill2"></span>
+          </div>
+          <span class="time" id="time2">0:00</span>
+        </div>
+        <audio id="audio2" src="/audio/kogda-umolknut-acoustic.mp3" preload="metadata" playsinline webkit-playsinline></audio>
+      </div>
     </section>
 
     <nav class="footer" aria-label="Дополнительная навигация">
@@ -391,12 +413,6 @@ body{
 
 <script>
 (()=>{
-  const audio=document.getElementById("audio");
-  const play=document.getElementById("playButton");
-  const progress=document.getElementById("progress");
-  const fill=document.getElementById("progressFill");
-  const time=document.getElementById("time");
-
   const fmt=s=>{
     if(!Number.isFinite(s))return "0:00";
     const m=Math.floor(s/60);
@@ -404,52 +420,82 @@ body{
     return m+":"+sec;
   };
 
-  play.addEventListener("click",()=>{
-    if(!audio.paused){
-      audio.pause();
-      return;
+  const players=[
+    {
+      audio:document.getElementById("audio"),
+      play:document.getElementById("playButton"),
+      progress:document.getElementById("progress"),
+      fill:document.getElementById("progressFill"),
+      time:document.getElementById("time"),
+      label:"Воспроизвести Метро"
+    },
+    {
+      audio:document.getElementById("audio2"),
+      play:document.getElementById("playButton2"),
+      progress:document.getElementById("progress2"),
+      fill:document.getElementById("progressFill2"),
+      time:document.getElementById("time2"),
+      label:"Воспроизвести Когда умолкнут голоса"
     }
+  ];
 
-    if(audio.readyState===0){
-      audio.load();
-    }
+  players.forEach((player,index)=>{
+    const {audio,play,progress,fill,time,label}=player;
 
-    const result=audio.play();
-    if(result && typeof result.catch==="function"){
-      result.catch(error=>{
-        console.error("Audio playback failed:",error);
-        play.textContent="▶";
-        play.setAttribute("aria-label","Воспроизвести Метро");
+    play.addEventListener("click",()=>{
+      if(!audio.paused){
+        audio.pause();
+        return;
+      }
+
+      players.forEach((other,otherIndex)=>{
+        if(otherIndex!==index && !other.audio.paused){
+          other.audio.pause();
+        }
       });
-    }
-  });
 
-  audio.addEventListener("play",()=>{
-    play.textContent="❚❚";
-    play.setAttribute("aria-label","Пауза");
-  });
+      if(audio.readyState===0){
+        audio.load();
+      }
 
-  audio.addEventListener("pause",()=>{
-    play.textContent="▶";
-    play.setAttribute("aria-label","Воспроизвести");
-  });
+      const result=audio.play();
+      if(result && typeof result.catch==="function"){
+        result.catch(error=>{
+          console.error("Audio playback failed:",error);
+          play.textContent="▶";
+          play.setAttribute("aria-label",label);
+        });
+      }
+    });
 
-  audio.addEventListener("timeupdate",()=>{
-    const ratio=audio.duration?audio.currentTime/audio.duration:0;
-    fill.style.width=(ratio*100)+"%";
-    progress.setAttribute("aria-valuenow",Math.round(ratio*100));
-    time.textContent=fmt(audio.currentTime);
-  });
+    audio.addEventListener("play",()=>{
+      play.textContent="❚❚";
+      play.setAttribute("aria-label","Пауза");
+    });
 
-  audio.addEventListener("ended",()=>{
-    play.textContent="▶";
-  });
+    audio.addEventListener("pause",()=>{
+      play.textContent="▶";
+      play.setAttribute("aria-label",label);
+    });
 
-  progress.addEventListener("click",event=>{
-    if(!audio.duration)return;
-    const rect=progress.getBoundingClientRect();
-    const ratio=Math.min(1,Math.max(0,(event.clientX-rect.left)/rect.width));
-    audio.currentTime=ratio*audio.duration;
+    audio.addEventListener("timeupdate",()=>{
+      const ratio=audio.duration?audio.currentTime/audio.duration:0;
+      fill.style.width=(ratio*100)+"%";
+      progress.setAttribute("aria-valuenow",Math.round(ratio*100));
+      time.textContent=fmt(audio.currentTime);
+    });
+
+    audio.addEventListener("ended",()=>{
+      play.textContent="▶";
+      play.setAttribute("aria-label",label);
+    });
+
+    progress.addEventListener("click",event=>{
+      if(!audio.duration)return;
+      const rect=progress.getBoundingClientRect();
+      const ratio=Math.min(1,Math.max(0,(event.clientX-rect.left)/rect.width));
+      audio.currentTime=ratio*audio.duration;
+    });
   });
 })();
 </script>
