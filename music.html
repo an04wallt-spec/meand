@@ -202,6 +202,12 @@ body{
   gap:18px;
   margin-bottom:1em;
 }
+.track-links{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:6px;
+}
 .track-link{
   flex:0 0 auto;
   color:var(--warm);
@@ -373,7 +379,10 @@ body{
             <p class="audio-title">Метро</p>
             <p class="audio-note">MeAnd</p>
           </div>
-          <a class="track-link" href="https://music.yandex.ru/album/44513343">Яндекс Музыка ↗</a>
+          <div class="track-links">
+            <a class="track-link" href="https://music.yandex.ru/album/44513343">Яндекс Музыка ↗</a>
+            <a class="track-link" href="https://youtu.be/lZbKlnmKm4U?is=QaafNE737bWt11EX">YouTube ↗</a>
+          </div>
         </div>
         <div class="player">
           <button class="play" id="playButton" type="button" aria-label="Воспроизвести Метро">▶</button>
